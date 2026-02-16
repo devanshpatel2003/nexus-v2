@@ -429,58 +429,95 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
 }}
 
 /* ════════════════════════════
-   CHAT MESSAGES — clean, minimal
+   CHAT — rebuilt from scratch
    ════════════════════════════ */
+
+/* Animation keyframes */
+@keyframes fadeSlideIn {{
+    from {{ opacity: 0; transform: translateY(6px); }}
+    to   {{ opacity: 1; transform: translateY(0); }}
+}}
+
+/* Message container */
 [data-testid="stChatMessage"] {{
-    border-radius: 4px;
-    border: 1px solid #eee;
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    background: #ffffff;
-    box-shadow: none;
-    gap: 12px !important;
+    border: none !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    border-radius: 0 !important;
+    padding: 16px 4px !important;
+    margin-bottom: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    gap: 14px !important;
+    animation: fadeSlideIn 0.25s ease-out;
 }}
-[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {{
-    background: #f9f9f9;
+/* Last message — no border */
+[data-testid="stChatMessage"]:last-of-type {{
+    border-bottom: none !important;
 }}
-[data-testid="stChatMessage"] [data-testid="chatAvatarIcon-user"],
-[data-testid="stChatMessage"] [data-testid="chatAvatarIcon-assistant"] {{
-    display: none !important;
+
+/* Avatar — small, clean circle */
+[data-testid="stChatMessage"] [data-testid*="chatAvatarIcon"] {{
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.85rem !important;
 }}
-[data-testid="stChatMessage"] > div:first-child {{
-    min-width: 30px !important;
-    max-width: 30px !important;
-    height: 30px !important;
-    border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 0.7rem !important;
-    font-weight: 700 !important;
-    flex-shrink: 0 !important;
-}}
+
+/* Message text */
 [data-testid="stChatMessage"] p {{
     font-size: 0.88rem !important;
-    line-height: 1.7 !important;
+    line-height: 1.75 !important;
     color: #333 !important;
-    margin: 0 !important;
+    margin: 0 0 4px 0 !important;
     overflow-wrap: break-word !important;
     word-break: break-word !important;
 }}
 [data-testid="stChatMessage"] strong {{ color: #111 !important; }}
-/* Chat input */
+[data-testid="stChatMessage"] code {{
+    font-size: 0.82rem !important;
+    background: #f3f3f3 !important;
+    padding: 1px 5px !important;
+    border-radius: 3px !important;
+    color: #333 !important;
+}}
+[data-testid="stChatMessage"] ul, [data-testid="stChatMessage"] ol {{
+    margin: 6px 0 !important;
+    padding-left: 20px !important;
+}}
+[data-testid="stChatMessage"] li {{
+    font-size: 0.86rem !important;
+    line-height: 1.7 !important;
+    color: #333 !important;
+    margin-bottom: 3px !important;
+}}
+
+/* Chat input bar */
 [data-testid="stChatInput"] {{
     border-top: 1px solid #eee !important;
-    padding-top: 12px !important;
+    padding: 14px 0 0 0 !important;
 }}
 [data-testid="stChatInput"] textarea {{
     font-size: 0.88rem !important;
     color: #333 !important;
-    border-radius: 4px !important;
-    border-color: #ddd !important;
+    background: #fafafa !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    padding: 10px 14px !important;
+    caret-color: #333 !important;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}}
+[data-testid="stChatInput"] textarea:focus {{
+    border-color: {BLUE_ACCENT} !important;
+    background: #fff !important;
+    outline: none !important;
 }}
 [data-testid="stChatInput"] textarea::placeholder {{
-    color: #999 !important;
+    color: #bbb !important;
+    font-weight: 400 !important;
+}}
+/* Hide Streamlit instruction overlays */
+[data-testid="stChatInput"] [data-testid="InputInstructions"],
+[data-testid="stChatInput"] [data-testid="stChatInputInstructions"] {{
+    display: none !important;
 }}
 
 /* ════════════════════════════
@@ -544,10 +581,38 @@ hr {{
     border-top: none !important;
     border-radius: 0 0 3px 3px !important;
     padding: 12px 14px !important;
+    background: #fafafa !important;
+}}
+/* Evidence expander inside chat */
+[data-testid="stChatMessage"] [data-testid="stExpander"] {{
+    margin-top: 8px !important;
+    animation: fadeSlideIn 0.2s ease-out;
+}}
+[data-testid="stChatMessage"] [data-testid="stExpander"] summary {{
+    background: transparent !important;
+    border: none !important;
+    border-top: 1px solid #f0f0f0 !important;
+    border-radius: 0 !important;
+    padding: 8px 0 4px 0 !important;
+}}
+[data-testid="stChatMessage"] [data-testid="stExpander"] summary span {{
+    font-size: 0.76rem !important;
+    font-weight: 500 !important;
+    color: #999 !important;
+}}
+[data-testid="stChatMessage"] [data-testid="stExpander"] [data-testid="stExpanderDetails"] {{
+    background: transparent !important;
+    padding: 4px 0 0 0 !important;
+    border: none !important;
+}}
+[data-testid="stChatMessage"] [data-testid="stExpander"] [data-testid="stExpanderDetails"] p {{
+    font-size: 0.8rem !important;
+    color: #666 !important;
+    margin-bottom: 4px !important;
 }}
 .stCodeBlock {{
     border-radius: 3px !important;
-    font-size: 0.8rem !important;
+    font-size: 0.78rem !important;
 }}
 /* Charts — no heavy borders */
 [data-testid="stPlotlyChart"] {{
@@ -736,131 +801,134 @@ summary = get_event_summary()
 # ============================================================
 
 with tab_chat:
-    st.markdown('<div class="section-header">AI Research Assistant &middot; RAG-Grounded Analysis</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="callout callout-blue">
-        <strong>How this works:</strong> The research assistant retrieves relevant passages from 15 curated
-        case study documents using vector similarity search (RAG), then augments responses with live
-        market data via four callable tools: <strong>Price Analysis</strong>, <strong>Event Study (CAR)</strong>,
-        <strong>Volatility Surface</strong>, and <strong>Ecosystem Comparison</strong>. Every response must
-        cite its sources — either retrieved documents or tool outputs. The system will not fabricate data.
-    </div>
-    """, unsafe_allow_html=True)
-
+    # ── Session state init ──
     if "messages" not in st.session_state:
         st.session_state.messages = []
     if "agent_logs" not in st.session_state:
         st.session_state.agent_logs = []
+    if "processing" not in st.session_state:
+        st.session_state.processing = False
 
-    for msg in st.session_state.messages:
-        avatar = "\U0001F4CA" if msg["role"] == "assistant" else "\U0001F464"
-        with st.chat_message(msg["role"], avatar=avatar):
-            st.markdown(msg.get("content", ""))
-            # Show evidence expander for assistant messages
-            evidence = msg.get("evidence", {})
-            if evidence and msg["role"] == "assistant":
-                with st.expander("Evidence & Sources", expanded=False):
-                    if evidence.get("citations"):
-                        st.markdown("**Retrieved Documents:**")
-                        for cid in evidence["citations"]:
-                            st.code(cid, language=None)
-                    if evidence.get("tools"):
-                        st.markdown("**Tools Executed:**")
-                        for tc in evidence["tools"]:
-                            st.code(
-                                f"{tc['tool']}({json.dumps(tc.get('arguments', {}), default=str)[:120]})",
-                                language="python",
-                            )
-
+    # ── Empty state: show intro + suggestions ──
     if not st.session_state.messages:
-        st.markdown('<div class="section-header">Suggested Queries</div>', unsafe_allow_html=True)
-
         st.markdown("""
-        <div class="callout">
-            Select a pre-built query below to explore the platform's capabilities, or type your own question.
-            The assistant can answer factual questions from case materials, run quantitative analyses on
-            demand, and synthesize findings across multiple data sources.
+        <div style="padding:24px 0 8px 0;">
+            <div style="font-size:1.1rem; font-weight:700; color:#111; margin-bottom:4px;">
+                Research Assistant
+            </div>
+            <div style="font-size:0.84rem; color:#888; line-height:1.6;">
+                Ask questions about semiconductor export controls, run event studies,
+                analyze volatility surfaces, or compare ecosystem tickers.
+                Responses are grounded in 15 curated case documents via RAG retrieval and
+                augmented with live market data tools.
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
-        cols = st.columns(2)
+        st.markdown("")
+
         suggestions = [
-            ("What was the market impact of the October 7 export controls?", "Document Retrieval"),
-            ("Run a CAR analysis for NVDA around Critical events", "Event Study Tool"),
-            ("Compare NVDA, TSM, and ASML performance since 2022", "Ecosystem Tool"),
-            ("What is the current volatility skew for NVDA puts?", "Volatility Tool"),
-            ("How did hyperscalers react to export control announcements?", "Multi-Source"),
-            ("Explain the event study methodology and its limitations", "Methodology"),
+            ("What was the market impact of the October 7 export controls?", "Documents"),
+            ("Run a CAR analysis for NVDA around Critical events", "Event Study"),
+            ("Compare NVDA, TSM, and ASML performance since 2022", "Ecosystem"),
+            ("What is the current volatility skew for NVDA puts?", "Volatility"),
         ]
+        cols = st.columns(2)
         for i, (q, tag) in enumerate(suggestions):
             with cols[i % 2]:
-                if st.button(f"{tag}  |  {q}", key=f"suggest_{i}", width="stretch"):
-                    st.session_state.pending_question = q
+                if st.button(f"**{tag}** — {q}", key=f"sug_{i}", width="stretch"):
+                    st.session_state.messages.append({"role": "user", "content": q})
+                    st.session_state.processing = True
                     st.rerun()
 
-    if "pending_question" in st.session_state:
-        user_input = st.session_state.pending_question
-        del st.session_state.pending_question
-    else:
-        user_input = st.chat_input("Ask about export controls, CAR analysis, volatility, ecosystem...")
+    # ── Render conversation history ──
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg.get("content", ""))
+            # Evidence (assistant only)
+            ev = msg.get("evidence")
+            if ev and msg["role"] == "assistant":
+                parts = []
+                if ev.get("citations"):
+                    parts.append("**Sources:** " + " · ".join(
+                        f"`{c}`" for c in ev["citations"]
+                    ))
+                if ev.get("tools"):
+                    parts.append("**Tools:** " + " · ".join(
+                        f"`{t['tool']}`" for t in ev["tools"]
+                    ))
+                if parts:
+                    st.caption(" | ".join(parts))
 
+    # ── Chat input ──
+    user_input = st.chat_input("Ask a question...")
+
+    # Handle new input from chat bar
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
-
-        # Process the response
-        with st.chat_message("assistant", avatar="\U0001F4CA"):
-            with st.spinner("Retrieving context & executing tools..."):
-                try:
-                    from core.chat.agent import run_agent
-                    history = [{"role": m["role"], "content": m["content"]}
-                               for m in st.session_state.messages[:-1][-10:]]
-                    result = run_agent(user_input, history)
-                    response_text = result.get("response", "") or ""
-
-                    # Store response and evidence in session state
-                    evidence = {}
-                    if result.get("citations"):
-                        evidence["citations"] = result["citations"][:5]
-                    if result.get("tools_called"):
-                        evidence["tools"] = result["tools_called"]
-
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": response_text,
-                        "evidence": evidence,
-                    })
-                    st.session_state.agent_logs.append(result)
-
-                except ImportError:
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": "Chat requires `openai` and `chromadb`. Run: `pip install openai chromadb`",
-                    })
-                except Exception as e:
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": f"Error: {str(e)[:300]}",
-                    })
-
-        # Rerun so the full conversation re-renders cleanly from session state
+        st.session_state.processing = True
         st.rerun()
 
+    # ── Process pending query ──
+    if st.session_state.processing:
+        st.session_state.processing = False
+        # Get the last user message
+        last_user_msg = next(
+            (m["content"] for m in reversed(st.session_state.messages) if m["role"] == "user"),
+            None,
+        )
+        if last_user_msg:
+            with st.chat_message("assistant"):
+                with st.spinner("Analyzing..."):
+                    try:
+                        from core.chat.agent import run_agent
+                        history = [
+                            {"role": m["role"], "content": m.get("content", "")}
+                            for m in st.session_state.messages[:-1][-10:]
+                        ]
+                        result = run_agent(last_user_msg, history)
+                        response_text = result.get("response", "") or "No response generated."
+
+                        evidence = {}
+                        if result.get("citations"):
+                            evidence["citations"] = result["citations"][:5]
+                        if result.get("tools_called"):
+                            evidence["tools"] = result["tools_called"]
+
+                        st.session_state.messages.append({
+                            "role": "assistant",
+                            "content": response_text,
+                            "evidence": evidence,
+                        })
+                        st.session_state.agent_logs.append(result)
+
+                    except ImportError:
+                        st.session_state.messages.append({
+                            "role": "assistant",
+                            "content": "Missing dependencies. Run: `pip install openai chromadb`",
+                        })
+                    except Exception as e:
+                        st.session_state.messages.append({
+                            "role": "assistant",
+                            "content": f"Something went wrong: {str(e)[:250]}",
+                        })
+
+            st.rerun()
+
+    # ── Sidebar: chat controls ──
     with st.sidebar:
         st.markdown("### Chat Controls")
-        if st.button("Clear Conversation", width="stretch"):
+        if st.button("Clear Conversation", key="clear_chat", width="stretch"):
             st.session_state.messages = []
             st.session_state.agent_logs = []
+            st.session_state.processing = False
             st.rerun()
         if st.session_state.agent_logs:
-            with st.expander("Agent Telemetry"):
-                for i, log in enumerate(st.session_state.agent_logs):
-                    cites = len(log.get("citations", []))
-                    tools = len(log.get("tools_called", []))
-                    tool_names = ", ".join(t["tool"] for t in log.get("tools_called", [])) or "none"
-                    st.markdown(
-                        f"**Turn {i+1}** — {cites} citations, {tools} tools (`{tool_names}`)"
-                    )
+            n_turns = len(st.session_state.agent_logs)
+            total_tools = sum(len(l.get("tools_called", [])) for l in st.session_state.agent_logs)
+            total_cites = sum(len(l.get("citations", [])) for l in st.session_state.agent_logs)
+            st.caption(f"{n_turns} turns · {total_cites} citations · {total_tools} tool calls")
 
 # ============================================================
 # TAB 1: EVENT DATABASE
