@@ -1,20 +1,17 @@
 """
-NEXUS: Nvidia Export Controls Research & Trading System
-Section 1: Export Control Event Database
-Section 2: Event-Price Reaction Chart with CAR Analysis
-Section 3: Competitor Comparison Panel
-Section 4: Volatility Surface View
+NEXUS v2: AI-Powered Finance Research Assistant
+Intelligent chat interface grounded in semiconductor export control case study.
+Built for MGMT 69000: Mastering AI for Finance — Purdue University.
 """
 
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
+import json
 
-# Import our modules
+# Import data modules
 from data.export_control_events import (
     get_events_dataframe,
     get_event_summary,
@@ -50,7 +47,7 @@ from data.options_data import (
 # ============================================================
 
 st.set_page_config(
-    page_title="NEXUS - Export Control Analysis",
+    page_title="NEXUS v2 — AI Finance Research Assistant",
     page_icon="🔒",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -60,15 +57,140 @@ st.set_page_config(
 # HEADER & NAVIGATION
 # ============================================================
 
-st.title("🔒 NEXUS: Nvidia Export Controls Research System")
+st.title("🔒 NEXUS v2: AI Finance Research Assistant")
+st.caption("Grounded in the semiconductor export control case study | MGMT 69000")
 
-# Tab navigation
-tab1, tab2, tab3, tab4 = st.tabs([
+# Tab navigation — Chat is primary
+tab_chat, tab1, tab2, tab3, tab4 = st.tabs([
+    "💬 Research Chat",
     "📋 Event Database",
     "📈 Price Reaction",
-    "⚔️ Competitor Analysis",
-    "🌊 Volatility Surface"
+    "⚔️ Ecosystem Analysis",
+    "🌊 Volatility Surface",
 ])
+
+# ============================================================
+# TAB: RESEARCH CHAT (Primary Interface)
+# ============================================================
+
+with tab_chat:
+    st.markdown("**Ask questions grounded in the export control case study, event data, and market analytics.**")
+
+    # Initialize chat state
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+    if "agent_logs" not in st.session_state:
+        st.session_state.agent_logs = []
+
+    # Display chat history
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+
+    # Suggested questions
+    if not st.session_state.messages:
+        st.markdown("---")
+        st.markdown("**Try asking:**")
+        cols = st.columns(2)
+        suggestions = [
+            "What was the market impact of the October 7 export controls?",
+            "Run a CAR analysis for NVDA around Critical events",
+            "Compare NVDA, TSM, and ASML performance since 2022",
+            "What is the current volatility skew for NVDA puts?",
+            "How did hyperscalers react to export control announcements?",
+            "Explain the event study methodology and its limitations",
+        ]
+        for i, q in enumerate(suggestions):
+            with cols[i % 2]:
+                if st.button(q, key=f"suggest_{i}", use_container_width=True):
+                    st.session_state.pending_question = q
+                    st.rerun()
+
+    # Handle suggested question
+    if "pending_question" in st.session_state:
+        user_input = st.session_state.pending_question
+        del st.session_state.pending_question
+    else:
+        user_input = st.chat_input("Ask about export controls, CAR analysis, volatility, ecosystem...")
+
+    if user_input:
+        # Show user message
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"):
+            st.markdown(user_input)
+
+        # Generate response
+        with st.chat_message("assistant"):
+            with st.spinner("Analyzing with RAG + tools..."):
+                try:
+                    from core.chat.agent import run_agent
+
+                    # Build conversation history (last 10 messages for context)
+                    history = []
+                    for msg in st.session_state.messages[:-1][-10:]:
+                        history.append({
+                            "role": msg["role"],
+                            "content": msg["content"],
+                        })
+
+                    result = run_agent(user_input, history)
+
+                    response_text = result["response"]
+                    st.markdown(response_text)
+
+                    # Show evidence panel
+                    if result["tools_called"] or result["citations"]:
+                        with st.expander("📎 Evidence & Sources", expanded=False):
+                            if result["citations"]:
+                                st.markdown("**Retrieved Documents:**")
+                                for cid in result["citations"][:5]:
+                                    st.markdown(f"- `{cid}`")
+                            if result["tools_called"]:
+                                st.markdown("**Tools Called:**")
+                                for tc in result["tools_called"]:
+                                    st.markdown(f"- `{tc['tool']}({json.dumps(tc['arguments'], default=str)[:100]}...)`")
+
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": response_text,
+                    })
+                    st.session_state.agent_logs.append(result)
+
+                except ImportError:
+                    st.warning(
+                        "Chat requires `openai` and `chromadb`. "
+                        "Install with: `pip install openai chromadb`\n\n"
+                        "Then set your API key in `.streamlit/secrets.toml`:\n"
+                        "```\nOPENAI_API_KEY = \"sk-...\"\n```\n\n"
+                        "And build the index: `python scripts/build_index.py`"
+                    )
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": "⚠️ Chat dependencies not installed. See setup instructions.",
+                    })
+                except Exception as e:
+                    error_msg = f"Error: {str(e)[:300]}"
+                    st.error(error_msg)
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": error_msg,
+                    })
+
+    # Sidebar: chat controls
+    with st.sidebar:
+        st.markdown("---")
+        st.header("Chat Controls")
+        if st.button("Clear Chat", use_container_width=True):
+            st.session_state.messages = []
+            st.session_state.agent_logs = []
+            st.rerun()
+
+        if st.session_state.agent_logs:
+            with st.expander("Agent Logs"):
+                for i, log in enumerate(st.session_state.agent_logs):
+                    st.markdown(f"**Turn {i+1}:** {len(log.get('citations', []))} citations, "
+                                f"{len(log.get('tools_called', []))} tools")
+
 
 # ============================================================
 # LOAD DATA (cached)
