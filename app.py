@@ -33,268 +33,332 @@ from data.options_data import (
 # ============================================================
 
 st.set_page_config(
-    page_title="NEXUS v2 — AI Finance Research Assistant",
-    page_icon="🔒",
+    page_title="NEXUS v2 — Semiconductor Export Control Research",
+    page_icon="N",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # ============================================================
-# INSTITUTIONAL CSS
+# INSTITUTIONAL CSS — White / Navy Blue
 # ============================================================
 
-st.markdown("""
+NAVY = "#0f1d33"
+NAVY_LIGHT = "#1a2744"
+NAVY_MID = "#2a3a5c"
+BLUE_ACCENT = "#2563eb"
+SLATE = "#475569"
+BORDER = "#e2e8f0"
+BG_SUBTLE = "#f8fafc"
+
+st.markdown(f"""
 <style>
-/* ---- Global ---- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-html, body, [class*="st-"] {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
+html, body, [class*="st-"] {{
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}}
 
-/* ---- Hide default Streamlit branding ---- */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
+/* Hide default branding */
+#MainMenu {{visibility: hidden;}}
+footer {{visibility: hidden;}}
+header {{visibility: hidden;}}
 
-/* ---- Main container ---- */
-.block-container {
-    padding-top: 1.5rem;
+/* Main container */
+.block-container {{
+    padding-top: 0.8rem;
     padding-bottom: 1rem;
     max-width: 1400px;
-}
+}}
 
-/* ---- Metric cards ---- */
-[data-testid="stMetric"] {
-    background: linear-gradient(135deg, rgba(118,185,0,0.06) 0%, rgba(30,30,60,0.4) 100%);
-    border: 1px solid rgba(118,185,0,0.15);
-    border-radius: 10px;
-    padding: 16px 20px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-}
-
-[data-testid="stMetricLabel"] {
-    font-size: 0.72rem !important;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(250,250,250,0.55) !important;
-}
-
-[data-testid="stMetricValue"] {
-    font-size: 1.5rem !important;
-    font-weight: 700;
+/* ── Brand Header ── */
+.brand-header {{
+    background: linear-gradient(135deg, {NAVY} 0%, {NAVY_LIGHT} 100%);
+    margin: -1rem -1rem 1.5rem -1rem;
+    padding: 1.2rem 2rem;
+    border-bottom: 3px solid {BLUE_ACCENT};
+}}
+.brand-header .logo {{
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
     letter-spacing: -0.02em;
-}
-
-[data-testid="stMetricDelta"] {
-    font-size: 0.75rem !important;
-}
-
-/* ---- Tab styling ---- */
-.stTabs [data-baseweb="tab-list"] {
-    gap: 0px;
-    background: rgba(15,15,30,0.5);
-    border-radius: 10px;
-    padding: 4px;
-    border: 1px solid rgba(255,255,255,0.06);
-}
-
-.stTabs [data-baseweb="tab"] {
-    height: 44px;
-    border-radius: 8px;
+}}
+.brand-header .logo span {{
+    color: {BLUE_ACCENT};
+    font-weight: 800;
+}}
+.brand-header .tagline {{
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
     font-weight: 500;
-    font-size: 0.85rem;
-    letter-spacing: 0.01em;
-    color: rgba(250,250,250,0.5);
-    padding: 0 20px;
-}
+    margin-top: 2px;
+}}
 
-.stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, rgba(118,185,0,0.2) 0%, rgba(118,185,0,0.08) 100%) !important;
-    color: #76b900 !important;
-    border: 1px solid rgba(118,185,0,0.3);
-    font-weight: 600;
-}
+/* ── Metric Cards ── */
+[data-testid="stMetric"] {{
+    background: #ffffff;
+    border: 1px solid {BORDER};
+    border-radius: 8px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    border-left: 3px solid {NAVY_LIGHT};
+}}
 
-/* ---- Sidebar ---- */
-section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0a0a1a 0%, #0e1225 100%);
-    border-right: 1px solid rgba(118,185,0,0.1);
-}
-
-section[data-testid="stSidebar"] .stMarkdown h2,
-section[data-testid="stSidebar"] .stMarkdown h3 {
-    font-size: 0.75rem;
+[data-testid="stMetricLabel"] {{
+    font-size: 0.68rem !important;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: rgba(118,185,0,0.7);
-    margin-top: 1.2rem;
-}
+    color: {SLATE} !important;
+}}
 
-/* ---- Dataframes ---- */
-[data-testid="stDataFrame"] {
-    border: 1px solid rgba(255,255,255,0.06);
+[data-testid="stMetricValue"] {{
+    font-size: 1.4rem !important;
+    font-weight: 700;
+    color: {NAVY} !important;
+    letter-spacing: -0.02em;
+}}
+
+[data-testid="stMetricDelta"] {{
+    font-size: 0.72rem !important;
+}}
+
+/* ── Tab Navigation ── */
+.stTabs [data-baseweb="tab-list"] {{
+    gap: 0;
+    background: {BG_SUBTLE};
     border-radius: 8px;
-    overflow: hidden;
-}
+    padding: 3px;
+    border: 1px solid {BORDER};
+}}
 
-/* ---- Chat messages ---- */
-[data-testid="stChatMessage"] {
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.04);
-    padding: 1rem 1.2rem;
-    margin-bottom: 0.5rem;
-}
-
-/* ---- Buttons ---- */
-.stButton > button {
-    border: 1px solid rgba(118,185,0,0.25);
-    border-radius: 8px;
+.stTabs [data-baseweb="tab"] {{
+    height: 42px;
+    border-radius: 6px;
     font-weight: 500;
-    font-size: 0.8rem;
-    transition: all 0.2s ease;
-    background: rgba(118,185,0,0.06);
-}
-
-.stButton > button:hover {
-    border-color: rgba(118,185,0,0.5);
-    background: rgba(118,185,0,0.12);
-    box-shadow: 0 0 20px rgba(118,185,0,0.08);
-}
-
-/* ---- Expander ---- */
-.streamlit-expanderHeader {
     font-size: 0.82rem;
+    letter-spacing: 0.01em;
+    color: {SLATE};
+    padding: 0 18px;
+    white-space: nowrap;
+}}
+
+.stTabs [aria-selected="true"] {{
+    background: {NAVY_LIGHT} !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    box-shadow: 0 1px 4px rgba(15,29,51,0.2);
+}}
+
+/* ── Sidebar ── */
+section[data-testid="stSidebar"] {{
+    background: linear-gradient(180deg, {NAVY} 0%, {NAVY_LIGHT} 100%);
+    border-right: 1px solid rgba(255,255,255,0.08);
+}}
+
+section[data-testid="stSidebar"] * {{
+    color: rgba(255,255,255,0.85) !important;
+}}
+
+section[data-testid="stSidebar"] label {{
+    color: rgba(255,255,255,0.55) !important;
+    font-size: 0.75rem !important;
     font-weight: 500;
-    color: rgba(250,250,250,0.65);
-}
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}}
 
-/* ---- Dividers ---- */
-hr {
-    border-color: rgba(255,255,255,0.04) !important;
-    margin: 1.5rem 0 !important;
-}
+section[data-testid="stSidebar"] .stSelectbox > div > div {{
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.12);
+    color: #ffffff;
+}}
 
-/* ---- Section headers ---- */
-.section-header {
+section[data-testid="stSidebar"] .stMarkdown h2,
+section[data-testid="stSidebar"] .stMarkdown h3 {{
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: rgba(118,185,0,0.6);
-    margin-bottom: 0.8rem;
-    padding-bottom: 0.4rem;
-    border-bottom: 1px solid rgba(118,185,0,0.12);
-}
+    color: rgba(255,255,255,0.4) !important;
+    margin-top: 1.4rem;
+}}
 
-/* ---- Badge pills ---- */
-.badge-critical { background: rgba(155,89,182,0.2); color: #bb6bd9; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; }
-.badge-high { background: rgba(231,76,60,0.2); color: #e74c3c; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; }
-.badge-medium { background: rgba(243,156,18,0.2); color: #f39c12; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; }
-.badge-low { background: rgba(46,204,113,0.2); color: #2ecc71; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; }
+/* ── Dataframes ── */
+[data-testid="stDataFrame"] {{
+    border: 1px solid {BORDER};
+    border-radius: 8px;
+    overflow: hidden;
+}}
 
-/* ---- Logo / Brand Bar ---- */
-.brand-bar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0.6rem 0 1rem 0;
-    border-bottom: 1px solid rgba(118,185,0,0.12);
-    margin-bottom: 1.2rem;
-}
-.brand-bar .logo {
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    color: #fafafa;
-}
-.brand-bar .logo span { color: #76b900; }
-.brand-bar .tagline {
-    font-size: 0.68rem;
-    color: rgba(250,250,250,0.35);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-weight: 500;
-}
-
-/* ---- Chat suggestion cards ---- */
-.suggestion-card {
-    background: rgba(118,185,0,0.04);
-    border: 1px solid rgba(118,185,0,0.12);
+/* ── Chat Messages ── */
+[data-testid="stChatMessage"] {{
     border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.suggestion-card:hover {
-    background: rgba(118,185,0,0.1);
-    border-color: rgba(118,185,0,0.3);
-}
+    border: 1px solid {BORDER};
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.5rem;
+    background: #ffffff;
+}}
 
-/* ---- Footer ---- */
-.pro-footer {
+/* ── Buttons ── */
+.stButton > button {{
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: all 0.15s ease;
+    background: #ffffff;
+    color: {NAVY_LIGHT};
+}}
+
+.stButton > button:hover {{
+    border-color: {NAVY_LIGHT};
+    background: {BG_SUBTLE};
+    box-shadow: 0 1px 4px rgba(15,29,51,0.08);
+    color: {NAVY};
+}}
+
+/* ── Expander ── */
+.streamlit-expanderHeader {{
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: {SLATE};
+}}
+
+/* ── Dividers ── */
+hr {{
+    border-color: {BORDER} !important;
+    margin: 1.5rem 0 !important;
+}}
+
+/* ── Section Headers ── */
+.section-header {{
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: {NAVY_LIGHT};
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid {NAVY_LIGHT};
+    display: block;
+}}
+
+/* ── Severity Badges ── */
+.badge-critical {{ background: #faf5ff; color: #7c3aed; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; border: 1px solid #e9d5ff; }}
+.badge-high {{ background: #fef2f2; color: #dc2626; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; border: 1px solid #fecaca; }}
+.badge-medium {{ background: #fffbeb; color: #d97706; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; border: 1px solid #fde68a; }}
+.badge-low {{ background: #f0fdf4; color: #16a34a; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; border: 1px solid #bbf7d0; }}
+
+/* ── Spot Price Banner ── */
+.spot-banner {{
+    background: linear-gradient(135deg, {NAVY} 0%, {NAVY_LIGHT} 100%);
+    border-radius: 8px;
+    padding: 14px 22px;
+    margin-bottom: 1.2rem;
+    display: inline-block;
+    border: 1px solid {NAVY_MID};
+}}
+.spot-banner .label {{
+    color: rgba(255,255,255,0.5);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}}
+.spot-banner .price {{
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-left: 8px;
+}}
+.spot-banner .meta {{
+    color: rgba(255,255,255,0.35);
+    font-size: 0.72rem;
+    margin-left: 12px;
+}}
+
+/* ── Footer ── */
+.pro-footer {{
     text-align: center;
     font-size: 0.65rem;
-    color: rgba(250,250,250,0.2);
-    letter-spacing: 0.05em;
+    color: {SLATE};
+    letter-spacing: 0.04em;
     padding: 2rem 0 0.5rem 0;
-    border-top: 1px solid rgba(255,255,255,0.03);
+    border-top: 1px solid {BORDER};
     margin-top: 3rem;
-}
-.pro-footer a { color: rgba(118,185,0,0.4); text-decoration: none; }
+    line-height: 1.8;
+}}
+
+/* ── Sidebar status overrides ── */
+section[data-testid="stSidebar"] [data-testid="stAlert"] {{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.75rem;
+}}
+
+/* ── Info/warning/error boxes on main area ── */
+.stAlert {{
+    border-radius: 8px;
+    font-size: 0.82rem;
+}}
 </style>
 """, unsafe_allow_html=True)
 
 # ============================================================
-# PLOTLY THEME (institutional dark)
+# PLOTLY THEME — Institutional Light
 # ============================================================
 
 PLOTLY_LAYOUT = dict(
-    template="plotly_dark",
+    template="plotly_white",
     paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(10,10,25,0.4)",
-    font=dict(family="Inter, sans-serif", size=12, color="rgba(250,250,250,0.7)"),
+    plot_bgcolor="#ffffff",
+    font=dict(family="Inter, sans-serif", size=12, color=NAVY_LIGHT),
     legend=dict(
         bgcolor="rgba(0,0,0,0)", borderwidth=0,
-        font=dict(size=11, color="rgba(250,250,250,0.55)"),
+        font=dict(size=11, color=SLATE),
         orientation="h", yanchor="bottom", y=1.02, xanchor="left",
     ),
-    margin=dict(l=50, r=20, t=50, b=40),
-    xaxis=dict(gridcolor="rgba(255,255,255,0.04)", zerolinecolor="rgba(255,255,255,0.06)"),
-    yaxis=dict(gridcolor="rgba(255,255,255,0.04)", zerolinecolor="rgba(255,255,255,0.06)"),
-    hoverlabel=dict(bgcolor="rgba(20,20,40,0.95)", font_size=12, font_family="Inter"),
+    margin=dict(l=55, r=20, t=60, b=45),
+    xaxis=dict(
+        gridcolor="#f1f5f9", zerolinecolor="#e2e8f0",
+        linecolor="#e2e8f0", linewidth=1,
+        tickfont=dict(size=11, color=SLATE),
+    ),
+    yaxis=dict(
+        gridcolor="#f1f5f9", zerolinecolor="#e2e8f0",
+        linecolor="#e2e8f0", linewidth=1,
+        tickfont=dict(size=11, color=SLATE),
+    ),
+    hoverlabel=dict(bgcolor=NAVY, font_size=12, font_family="Inter", font_color="#ffffff"),
 )
 
-# Title styling applied separately to avoid duplicate keyword conflicts
-TITLE_STYLE = dict(font=dict(size=14, color="rgba(250,250,250,0.85)"), x=0, xanchor="left")
+TITLE_STYLE = dict(font=dict(size=14, color=NAVY, family="Inter"), x=0, xanchor="left", y=0.97)
 
 COLORS = {
-    "NVDA": "#76b900", "AMD": "#ed1c24", "INTC": "#0071c5", "SPY": "#555555",
-    "TSM": "#e8530e", "ASML": "#00a3e0", "AVGO": "#cc0000",
-    "GOOGL": "#4285f4", "AMZN": "#ff9900", "MSFT": "#00a4ef",
-    "positive": "#00d97e", "negative": "#e63757", "accent": "#76b900",
-    "muted": "rgba(250,250,250,0.25)", "grid": "rgba(255,255,255,0.04)",
+    "NVDA": "#16a34a", "AMD": "#dc2626", "INTC": "#2563eb", "SPY": "#94a3b8",
+    "TSM": "#ea580c", "ASML": "#0891b2", "AVGO": "#be123c",
+    "GOOGL": "#4285f4", "AMZN": "#f59e0b", "MSFT": "#0ea5e9",
+    "positive": "#16a34a", "negative": "#dc2626", "accent": NAVY_LIGHT,
+    "muted": "#94a3b8", "grid": "#f1f5f9",
 }
 
-SEVERITY_COLORS = {"Low": "#2ecc71", "Medium": "#f39c12", "High": "#e74c3c", "Critical": "#bb6bd9"}
+SEVERITY_COLORS = {"Low": "#16a34a", "Medium": "#d97706", "High": "#dc2626", "Critical": "#7c3aed"}
 
 # ============================================================
 # HEADER
 # ============================================================
 
-st.markdown("""
-<div class="brand-bar">
-    <div>
-        <div class="logo"><span>N</span>EXUS <span>v2</span></div>
-        <div class="tagline">AI-Powered Semiconductor Export Control Research</div>
-    </div>
+st.markdown(f"""
+<div class="brand-header">
+    <div class="logo"><span>N</span>EXUS <span>v2</span></div>
+    <div class="tagline">AI-Powered Semiconductor Export Control Research</div>
 </div>
 """, unsafe_allow_html=True)
 
-# Tab navigation
 tab_chat, tab1, tab2, tab3, tab4 = st.tabs([
     "  Research Chat  ",
     "  Event Database  ",
@@ -304,25 +368,25 @@ tab_chat, tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 # ============================================================
-# SIDEBAR — Brand + Info
+# SIDEBAR
 # ============================================================
 
 with st.sidebar:
-    st.markdown("""
-    <div style="text-align:center; padding: 0.8rem 0 1.2rem 0; border-bottom: 1px solid rgba(118,185,0,0.1); margin-bottom: 1rem;">
-        <div style="font-size:1.3rem; font-weight:700; letter-spacing:-0.02em;">
-            <span style="color:#76b900;">N</span>EXUS <span style="color:#76b900;">v2</span>
+    st.markdown(f"""
+    <div style="text-align:center; padding: 1rem 0 1.2rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 1rem;">
+        <div style="font-size:1.2rem; font-weight:800; color:#ffffff; letter-spacing:-0.02em;">
+            <span style="color:{BLUE_ACCENT};">N</span>EXUS <span style="color:{BLUE_ACCENT};">v2</span>
         </div>
-        <div style="font-size:0.6rem; color:rgba(250,250,250,0.3); text-transform:uppercase; letter-spacing:0.1em; margin-top:4px;">
+        <div style="font-size:0.58rem; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:0.12em; margin-top:4px; font-weight:500;">
             Purdue Daniels School of Business
         </div>
-        <div style="font-size:0.55rem; color:rgba(250,250,250,0.2); margin-top:2px;">
+        <div style="font-size:0.52rem; color:rgba(255,255,255,0.22); margin-top:2px; letter-spacing:0.06em;">
             MGMT 69000 &middot; Mastering AI for Finance
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="section-header">System Status</div>', unsafe_allow_html=True)
+    st.markdown("### System Status")
     try:
         from core.rag.vector_store import get_collection
         count = get_collection().count()
@@ -343,7 +407,7 @@ with st.sidebar:
 
 with tab_chat:
     st.markdown('<div class="section-header">Grounded Research Assistant</div>', unsafe_allow_html=True)
-    st.markdown(
+    st.caption(
         "Ask questions about export controls, event studies, volatility, "
         "or the semiconductor ecosystem. Answers are grounded in case materials and live market tools."
     )
@@ -371,7 +435,7 @@ with tab_chat:
         ]
         for i, (q, tag) in enumerate(suggestions):
             with cols[i % 2]:
-                if st.button(f"**{tag}** — {q}", key=f"suggest_{i}", width="stretch"):
+                if st.button(f"{tag}  |  {q}", key=f"suggest_{i}", width="stretch"):
                     st.session_state.pending_question = q
                     st.rerun()
 
@@ -420,7 +484,7 @@ with tab_chat:
                     st.session_state.messages.append({"role": "assistant", "content": f"Error: {str(e)[:200]}"})
 
     with st.sidebar:
-        st.markdown('<div class="section-header">Chat Controls</div>', unsafe_allow_html=True)
+        st.markdown("### Chat Controls")
         if st.button("Clear Conversation", width="stretch"):
             st.session_state.messages = []
             st.session_state.agent_logs = []
@@ -474,7 +538,7 @@ with tab1:
     st.markdown('<div class="section-header">BIS Export Control Timeline &middot; 2022 – 2026</div>', unsafe_allow_html=True)
 
     with st.sidebar:
-        st.markdown('<div class="section-header">Event Filters</div>', unsafe_allow_html=True)
+        st.markdown("### Event Filters")
         date_range = st.date_input(
             "Date Range",
             value=(events_df["date"].min(), events_df["date"].max()),
@@ -498,7 +562,6 @@ with tab1:
     if selected_type != "All":
         filtered_df = filtered_df[filtered_df["event_type"] == selected_type]
 
-    # Metrics row
     m1, m2, m3, m4 = st.columns(4)
     with m1:
         st.metric("Total Events", len(filtered_df))
@@ -511,7 +574,6 @@ with tab1:
 
     st.markdown("")
 
-    # Timeline chart
     fig_timeline = go.Figure()
     for severity in ["Low", "Medium", "High", "Critical"]:
         sdf = filtered_df[filtered_df["severity"] == severity]
@@ -522,7 +584,7 @@ with tab1:
                 marker=dict(
                     size=14 if severity in ["Critical", "High"] else 10,
                     color=SEVERITY_COLORS[severity],
-                    line=dict(width=1, color="rgba(255,255,255,0.2)"),
+                    line=dict(width=1.5, color="#ffffff"),
                     symbol="diamond" if severity == "Critical" else "circle",
                 ),
                 hovertemplate="<b>%{customdata[0]}</b><br>NVDA: %{y:+.1f}%<extra></extra>",
@@ -534,10 +596,9 @@ with tab1:
         xaxis_title="", yaxis_title="NVDA Reaction (%)",
         height=420,
     )
-    fig_timeline.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.15)", line_width=1)
+    fig_timeline.add_hline(y=0, line_dash="dash", line_color="#cbd5e1", line_width=1)
     st.plotly_chart(fig_timeline, width="stretch")
 
-    # Table
     display_df = filtered_df[["date", "title", "severity", "event_type", "nvda_reaction_pct", "amd_reaction_pct"]].copy()
     display_df["date"] = display_df["date"].dt.strftime("%Y-%m-%d")
     display_df.columns = ["Date", "Event", "Severity", "Type", "NVDA %", "AMD %"]
@@ -566,7 +627,7 @@ with tab2:
 
     if data_loaded and len(prices) > 0:
         with st.sidebar:
-            st.markdown('<div class="section-header">Price Settings</div>', unsafe_allow_html=True)
+            st.markdown("### Price Settings")
             normalize_to = st.selectbox(
                 "Normalize To",
                 ["First Date", "ChatGPT Launch (2022-11-30)", "Oct 7 Controls (2022-10-07)"],
@@ -579,7 +640,6 @@ with tab2:
         base_date = "2022-11-30" if "ChatGPT" in normalize_to else ("2022-10-07" if "Oct 7" in normalize_to else None)
         normalized = normalize_prices(prices, base_date)
 
-        # Price chart
         fig = go.Figure()
         for t in ["NVDA", "AMD", "INTC", "SPY"]:
             if t in normalized.columns:
@@ -587,22 +647,21 @@ with tab2:
                     x=normalized.index, y=normalized[t], name=t,
                     line=dict(
                         color=COLORS[t],
-                        width=2.5 if t != "SPY" else 1,
+                        width=2.5 if t != "SPY" else 1.5,
                         dash="dot" if t == "SPY" else "solid",
                     ),
                 ))
         for _, ev in events_df.iterrows():
             if ev["severity"] == "Critical":
-                fig.add_vline(x=ev["date"], line_dash="dash", line_color="rgba(187,107,217,0.3)", line_width=1)
+                fig.add_vline(x=ev["date"], line_dash="dash", line_color="#c4b5fd", line_width=1)
         fig.update_layout(
             **PLOTLY_LAYOUT,
             title=dict(text=f"Normalized Price Performance (100 = {base_date or 'Start'})", **TITLE_STYLE),
             yaxis_title="Indexed Price", height=460,
         )
-        fig.add_hline(y=100, line_dash="dash", line_color="rgba(255,255,255,0.1)", line_width=1)
+        fig.add_hline(y=100, line_dash="dash", line_color="#cbd5e1", line_width=1)
         st.plotly_chart(fig, width="stretch")
 
-        # CAR section
         st.markdown('<div class="section-header">Cumulative Abnormal Returns</div>', unsafe_allow_html=True)
 
         car_results = load_car_results(prices, events_df, car_ticker, (win_start, win_end))
@@ -634,7 +693,7 @@ with tab2:
                 title=dict(text=f"{car_ticker} Cumulative Abnormal Return by Event [{win_start}, +{win_end}]", **TITLE_STYLE),
                 yaxis_title="CAR (%)", height=380,
             )
-            fig_car.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.15)")
+            fig_car.add_hline(y=0, line_dash="dash", line_color="#cbd5e1")
             st.plotly_chart(fig_car, width="stretch")
 
 # ============================================================
@@ -653,7 +712,7 @@ with tab3:
 
     if data_loaded and len(prices) > 0:
         with st.sidebar:
-            st.markdown('<div class="section-header">Ecosystem Settings</div>', unsafe_allow_html=True)
+            st.markdown("### Ecosystem Settings")
             cwin_start = st.slider("Window Start", -5, 0, -1, key="cwin_start")
             cwin_end = st.slider("Window End", 1, 10, 5, key="cwin_end")
             corr_win = st.slider("Correlation Window (days)", 10, 60, 30, key="corr_win")
@@ -662,7 +721,6 @@ with tab3:
         comp_df = competitor_to_dataframe(comp_results)
         comp_summary = get_competitive_summary(comp_results)
 
-        # Scorecard
         m1, m2, m3, m4 = st.columns(4)
         with m1:
             st.metric("NVDA Wins", f"{comp_summary.get('nvda_wins', 0)} / {len(comp_df)}")
@@ -675,7 +733,6 @@ with tab3:
 
         st.markdown("")
 
-        # Grouped bar
         fig_comp = go.Figure()
         for ticker, color in [("NVDA", COLORS["NVDA"]), ("AMD", COLORS["AMD"]), ("INTC", COLORS["INTC"])]:
             fig_comp.add_trace(go.Bar(
@@ -688,10 +745,9 @@ with tab3:
             title=dict(text=f"Event-Window Returns [{cwin_start}, +{cwin_end}]", **TITLE_STYLE),
             yaxis_title="Return (%)", height=420,
         )
-        fig_comp.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.15)")
+        fig_comp.add_hline(y=0, line_dash="dash", line_color="#cbd5e1")
         st.plotly_chart(fig_comp, width="stretch")
 
-        # Two-column: correlation + relative strength
         col1, col2 = st.columns(2)
         with col1:
             st.markdown('<div class="section-header">Rolling Correlation</div>', unsafe_allow_html=True)
@@ -699,15 +755,15 @@ with tab3:
             fig_corr = go.Figure()
             fig_corr.add_trace(go.Scatter(
                 x=correlation.index, y=correlation.values, name="NVDA-AMD",
-                line=dict(color="#00a3e0", width=1.5),
-                fill="tozeroy", fillcolor="rgba(0,163,224,0.06)",
+                line=dict(color=BLUE_ACCENT, width=2),
+                fill="tozeroy", fillcolor="rgba(37,99,235,0.06)",
             ))
             fig_corr.update_layout(
                 **PLOTLY_LAYOUT,
                 title=dict(text=f"NVDA-AMD {corr_win}-Day Return Correlation", **TITLE_STYLE),
                 yaxis_title="Correlation", height=360,
             )
-            fig_corr.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.1)")
+            fig_corr.add_hline(y=0, line_dash="dash", line_color="#cbd5e1")
             st.plotly_chart(fig_corr, width="stretch")
 
         with col2:
@@ -716,8 +772,8 @@ with tab3:
             fig_rel = go.Figure()
             fig_rel.add_trace(go.Scatter(
                 x=relative.index, y=relative.values, name="NVDA/AMD",
-                line=dict(color=COLORS["NVDA"], width=1.5),
-                fill="tozeroy", fillcolor="rgba(118,185,0,0.06)",
+                line=dict(color=NAVY_LIGHT, width=2),
+                fill="tozeroy", fillcolor=f"rgba(26,39,68,0.06)",
             ))
             fig_rel.update_layout(
                 **PLOTLY_LAYOUT,
@@ -734,7 +790,7 @@ with tab4:
     st.markdown('<div class="section-header">Options Implied Volatility &middot; Event Premium Analysis</div>', unsafe_allow_html=True)
 
     with st.sidebar:
-        st.markdown('<div class="section-header">Options Settings</div>', unsafe_allow_html=True)
+        st.markdown("### Options Settings")
         vol_ticker = st.selectbox("Ticker", ["NVDA", "AMD", "INTC"], key="vol_ticker")
         option_type = st.selectbox("Option Type", ["put", "call"], key="option_type")
 
@@ -747,15 +803,12 @@ with tab4:
             options_loaded = False
 
     if options_loaded:
-        # Spot banner
         st.markdown(
-            f'<div style="background:rgba(118,185,0,0.08); border:1px solid rgba(118,185,0,0.2); '
-            f'border-radius:8px; padding:10px 18px; margin-bottom:1rem; display:inline-block;">'
-            f'<span style="color:rgba(250,250,250,0.5); font-size:0.7rem; text-transform:uppercase; '
-            f'letter-spacing:0.08em;">Spot Price</span> &nbsp; '
-            f'<span style="font-size:1.3rem; font-weight:700; color:#76b900;">${spot_price:.2f}</span>'
-            f'&nbsp;&nbsp; <span style="color:rgba(250,250,250,0.3); font-size:0.75rem;">'
-            f'Calls: {len(calls)} &middot; Puts: {len(puts)}</span></div>',
+            f'<div class="spot-banner">'
+            f'<span class="label">Spot Price</span>'
+            f'<span class="price">${spot_price:.2f}</span>'
+            f'<span class="meta">Calls: {len(calls)} &middot; Puts: {len(puts)}</span>'
+            f'</div>',
             unsafe_allow_html=True,
         )
 
@@ -763,7 +816,6 @@ with tab4:
         vol_surface = build_vol_surface(options_df, spot_price, option_type)
 
         if not vol_surface.empty:
-            # Skew metrics
             skew_30 = calculate_skew(vol_surface, 30)
             skew_60 = calculate_skew(vol_surface, 60)
 
@@ -780,7 +832,6 @@ with tab4:
 
             st.markdown("")
 
-            # 3D Surface
             st.markdown('<div class="section-header">3D Implied Volatility Surface</div>', unsafe_allow_html=True)
 
             fig_3d = go.Figure(data=[go.Scatter3d(
@@ -790,28 +841,28 @@ with tab4:
                 mode='markers',
                 marker=dict(
                     size=4, color=vol_surface['implied_vol'],
-                    colorscale=[[0, "#00d97e"], [0.5, "#f6c343"], [1, "#e63757"]],
+                    colorscale=[[0, "#2563eb"], [0.5, "#f59e0b"], [1, "#dc2626"]],
                     colorbar=dict(title="IV %", thickness=15, len=0.6),
                     opacity=0.85, line=dict(width=0),
                 ),
                 hovertemplate="Moneyness: %{x:.1f}%<br>DTE: %{y}<br>IV: %{z:.1f}%<extra></extra>",
             )])
             fig_3d.update_layout(
-                template="plotly_dark",
+                template="plotly_white",
                 paper_bgcolor="rgba(0,0,0,0)",
-                title=dict(text=f"{vol_ticker} {option_type.upper()} Volatility Surface", font=dict(size=14)),
+                title=dict(text=f"{vol_ticker} {option_type.upper()} Volatility Surface",
+                           font=dict(size=14, color=NAVY, family="Inter")),
                 scene=dict(
-                    xaxis=dict(title="Moneyness (%)", backgroundcolor="rgba(10,10,25,0.3)", gridcolor="rgba(255,255,255,0.05)"),
-                    yaxis=dict(title="Days to Expiry", backgroundcolor="rgba(10,10,25,0.3)", gridcolor="rgba(255,255,255,0.05)"),
-                    zaxis=dict(title="Implied Vol (%)", backgroundcolor="rgba(10,10,25,0.3)", gridcolor="rgba(255,255,255,0.05)"),
+                    xaxis=dict(title="Moneyness (%)", backgroundcolor="#f8fafc", gridcolor="#e2e8f0"),
+                    yaxis=dict(title="Days to Expiry", backgroundcolor="#f8fafc", gridcolor="#e2e8f0"),
+                    zaxis=dict(title="Implied Vol (%)", backgroundcolor="#f8fafc", gridcolor="#e2e8f0"),
                     camera=dict(eye=dict(x=1.5, y=1.5, z=0.8)),
                 ),
-                font=dict(family="Inter", color="rgba(250,250,250,0.7)"),
-                height=580, margin=dict(l=0, r=0, t=40, b=0),
+                font=dict(family="Inter", color=NAVY_LIGHT),
+                height=580, margin=dict(l=0, r=0, t=50, b=0),
             )
             st.plotly_chart(fig_3d, width="stretch")
 
-            # Heatmap + legend
             st.markdown('<div class="section-header">Volatility Heatmap</div>', unsafe_allow_html=True)
 
             col1, col2 = st.columns([2.5, 1])
@@ -827,7 +878,7 @@ with tab4:
                         z=pivot_df.values,
                         x=[str(c) for c in pivot_df.columns],
                         y=[str(i) for i in pivot_df.index],
-                        colorscale=[[0, "#00d97e"], [0.5, "#f6c343"], [1, "#e63757"]],
+                        colorscale=[[0, "#dbeafe"], [0.5, "#fde68a"], [1, "#fca5a5"]],
                         colorbar=dict(title="IV %", thickness=12),
                         hovertemplate="Moneyness: %{y}<br>Expiry: %{x}<br>IV: %{z:.1f}%<extra></extra>",
                     ))
@@ -843,14 +894,13 @@ with tab4:
                 **Interpreting the Heatmap**
 
                 - **Red zones** — High IV, expensive options, elevated risk pricing
-                - **Green zones** — Low IV, cheaper options
+                - **Blue zones** — Low IV, cheaper options
                 - **OTM put skew** (negative moneyness) typically shows higher IV due to crash hedging demand
 
                 **Event Premium Signal:**
                 Elevated OTM put IV before BIS announcements indicates institutional hedging activity.
                 """)
 
-            # Term structure + Smile side by side
             term_structure = calculate_term_structure(vol_surface)
             smile_data = vol_surface[
                 (vol_surface['days_to_expiry'] >= 20) & (vol_surface['days_to_expiry'] <= 40)
@@ -865,8 +915,8 @@ with tab4:
                     fig_term.add_trace(go.Scatter(
                         x=term_structure['days_to_expiry'], y=term_structure['implied_vol'],
                         mode='lines+markers', name='ATM IV',
-                        line=dict(color="#00a3e0", width=2.5),
-                        marker=dict(size=8, line=dict(width=1, color="rgba(255,255,255,0.3)")),
+                        line=dict(color=BLUE_ACCENT, width=2.5),
+                        marker=dict(size=8, color=BLUE_ACCENT, line=dict(width=1.5, color="#ffffff")),
                     ))
                     fig_term.update_layout(
                         **PLOTLY_LAYOUT,
@@ -894,10 +944,10 @@ with tab4:
                     fig_smile.add_trace(go.Scatter(
                         x=smile_data['moneyness'], y=smile_data['implied_vol'],
                         mode='markers+lines', name='30d IV',
-                        line=dict(color="#bb6bd9", width=2),
-                        marker=dict(size=6, line=dict(width=1, color="rgba(255,255,255,0.2)")),
+                        line=dict(color="#7c3aed", width=2),
+                        marker=dict(size=6, color="#7c3aed", line=dict(width=1.5, color="#ffffff")),
                     ))
-                    fig_smile.add_vline(x=0, line_dash="dash", line_color="rgba(255,255,255,0.15)")
+                    fig_smile.add_vline(x=0, line_dash="dash", line_color="#cbd5e1")
                     fig_smile.update_layout(
                         **PLOTLY_LAYOUT,
                         title=dict(text="30-Day Volatility Smile", **TITLE_STYLE),
@@ -909,7 +959,6 @@ with tab4:
         else:
             st.warning("Could not build volatility surface from available options data.")
 
-    # Historical vol (always shown)
     st.markdown('<div class="section-header">Historical Realized Volatility</div>', unsafe_allow_html=True)
 
     with st.spinner("Loading historical volatility..."):
@@ -919,15 +968,15 @@ with tab4:
         fig_hist = go.Figure()
         fig_hist.add_trace(go.Scatter(
             x=hist_vol['date'], y=hist_vol['rv_20'], name='20-Day RV',
-            line=dict(color="#e63757", width=1.5),
+            line=dict(color="#dc2626", width=1.5),
         ))
         fig_hist.add_trace(go.Scatter(
             x=hist_vol['date'], y=hist_vol['rv_60'], name='60-Day RV',
-            line=dict(color="#00a3e0", width=1.5),
+            line=dict(color=BLUE_ACCENT, width=1.5),
         ))
         for _, ev in events_df.iterrows():
             if ev["severity"] in ["Critical", "High"]:
-                fig_hist.add_vline(x=ev["date"], line_dash="dash", line_color="rgba(187,107,217,0.25)", line_width=1)
+                fig_hist.add_vline(x=ev["date"], line_dash="dash", line_color="#c4b5fd", line_width=1)
         fig_hist.update_layout(
             **PLOTLY_LAYOUT,
             title=dict(text=f"{vol_ticker} Realized Volatility (purple lines = restriction events)", **TITLE_STYLE),
@@ -950,9 +999,10 @@ with tab4:
 # FOOTER
 # ============================================================
 
-st.markdown("""
+st.markdown(f"""
 <div class="pro-footer">
-    NEXUS v2 &middot; AI-Powered Finance Research Assistant &middot; MGMT 69000 &middot; Purdue University<br>
-    Data: BIS, SEC, Yahoo Finance &middot; CAR: Market Model (120d) &middot; Vol: Black-Scholes Implied &middot; RAG: ChromaDB + OpenAI
+    NEXUS v2 &middot; AI-Powered Semiconductor Export Control Research &middot; MGMT 69000 &middot; Purdue University<br>
+    Data Sources: Bureau of Industry & Security, SEC Filings, Yahoo Finance<br>
+    Methodology: Market Model CAR (120-day estimation) &middot; Black-Scholes IV &middot; ChromaDB RAG + OpenAI
 </div>
 """, unsafe_allow_html=True)
