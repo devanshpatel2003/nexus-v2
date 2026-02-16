@@ -1,0 +1,129 @@
+[
+  {
+    "doc_id": "event_2022-08-31",
+    "title": "Initial A100/H100 Export Restrictions",
+    "source_type": "event_db",
+    "date": "2022-08-31",
+    "severity": "High",
+    "tickers": ["NVDA", "AMD"],
+    "path": "knowledge/processed/events/event_2022-08-31.md"
+  },
+  {
+    "doc_id": "event_2022-10-07",
+    "title": "Sweeping China Chip Controls (October 7 Rules)",
+    "source_type": "event_db",
+    "date": "2022-10-07",
+    "severity": "Critical",
+    "tickers": ["NVDA", "AMD", "INTC", "TSM", "ASML"],
+    "path": "knowledge/processed/events/event_2022-10-07.md"
+  },
+  {
+    "doc_id": "event_2023-05-24",
+    "title": "Nvidia Q1 FY24 Earnings — AI Demand Explosion",
+    "source_type": "event_db",
+    "date": "2023-05-24",
+    "severity": "High",
+    "tickers": ["NVDA", "AMD"],
+    "path": "knowledge/processed/events/event_2023-05-24.md"
+  },
+  {
+    "doc_id": "event_2023-10-17",
+    "title": "Export Controls Expanded — A800/H800 Restricted",
+    "source_type": "event_db",
+    "date": "2023-10-17",
+    "severity": "High",
+    "tickers": ["NVDA", "AMD"],
+    "path": "knowledge/processed/events/event_2023-10-17.md"
+  },
+  {
+    "doc_id": "event_2024-01-30",
+    "title": "H200 Export Status Uncertain",
+    "source_type": "event_db",
+    "date": "2024-01-30",
+    "severity": "Medium",
+    "tickers": ["NVDA"],
+    "path": "knowledge/processed/events/event_2024-01-30.md"
+  },
+  {
+    "doc_id": "event_2024-04-15",
+    "title": "Huawei Ascend 910B Benchmark Reports",
+    "source_type": "event_db",
+    "date": "2024-04-15",
+    "severity": "Medium",
+    "tickers": ["NVDA", "AMD"],
+    "path": "knowledge/processed/events/event_2024-04-15.md"
+  },
+  {
+    "doc_id": "event_2024-09-09",
+    "title": "BIS Proposes Presumption of Denial Policy",
+    "source_type": "event_db",
+    "date": "2024-09-09",
+    "severity": "Critical",
+    "tickers": ["NVDA", "AMD", "INTC"],
+    "path": "knowledge/processed/events/event_2024-09-09.md"
+  },
+  {
+    "doc_id": "event_2025-01-15",
+    "title": "Biden Administration Finalizes AI Diffusion Rule",
+    "source_type": "event_db",
+    "date": "2025-01-15",
+    "severity": "High",
+    "tickers": ["NVDA", "AMD", "INTC", "TSM", "ASML"],
+    "path": "knowledge/processed/events/event_2025-01-15.md"
+  },
+  {
+    "doc_id": "event_2025-05-21",
+    "title": "Nvidia Q1 FY26 Earnings — China Revenue Disclosure",
+    "source_type": "event_db",
+    "date": "2025-05-21",
+    "severity": "Medium",
+    "tickers": ["NVDA", "AMD"],
+    "path": "knowledge/processed/events/event_2025-05-21.md"
+  },
+  {
+    "doc_id": "event_2025-10-12",
+    "title": "Controls Extended to AI Model Weights",
+    "source_type": "event_db",
+    "date": "2025-10-12",
+    "severity": "High",
+    "tickers": ["NVDA", "AMD", "GOOGL", "MSFT", "AMZN"],
+    "path": "knowledge/processed/events/event_2025-10-12.md"
+  },
+  {
+    "doc_id": "event_2026-01-20",
+    "title": "New Administration Reviews Export Policy",
+    "source_type": "event_db",
+    "date": "2026-01-20",
+    "severity": "Medium",
+    "tickers": ["NVDA", "AMD", "INTC"],
+    "path": "knowledge/processed/events/event_2026-01-20.md"
+  },
+  {
+    "doc_id": "method_event_study",
+    "title": "Event Study Methodology",
+    "source_type": "methodology",
+    "tickers": [],
+    "path": "knowledge/processed/methodology/method_event_study.md"
+  },
+  {
+    "doc_id": "method_volatility",
+    "title": "Volatility Surface Methodology",
+    "source_type": "methodology",
+    "tickers": [],
+    "path": "knowledge/processed/methodology/method_volatility.md"
+  },
+  {
+    "doc_id": "method_ecosystem",
+    "title": "Semiconductor Ecosystem Mapping",
+    "source_type": "methodology",
+    "tickers": [],
+    "path": "knowledge/processed/methodology/method_ecosystem.md"
+  },
+  {
+    "doc_id": "case_overview",
+    "title": "Nvidia Export Controls Case Study Overview",
+    "source_type": "case_study",
+    "tickers": ["NVDA", "AMD", "INTC", "TSM", "ASML"],
+    "path": "knowledge/processed/case_study/case_overview.md"
+  }
+]
