@@ -221,6 +221,107 @@ def get_competitive_summary(results: List[CompetitiveShiftResult]) -> Dict:
 
 
 # ============================================================
+# ECOSYSTEM ANALYSIS (expanded for NEXUS v2)
+# ============================================================
+
+def analyze_ecosystem(
+    prices: pd.DataFrame,
+    tickers: List[str],
+    benchmark: str = "SPY",
+    start_date: str = None,
+) -> Dict:
+    """
+    Compute ecosystem-wide metrics for arbitrary ticker sets.
+    Returns cumulative returns, volatility, correlations, and beta.
+    """
+    if start_date:
+        prices = prices[prices.index >= pd.to_datetime(start_date)]
+
+    available = [t for t in tickers if t in prices.columns]
+    if not available:
+        return {"error": "No tickers found in price data"}
+
+    returns = prices[available].pct_change().dropna()
+
+    # Cumulative returns
+    cum_returns = ((prices[available].iloc[-1] / prices[available].iloc[0]) - 1) * 100
+
+    # Annualized volatility
+    vol = returns.std() * np.sqrt(252) * 100
+
+    # Beta vs benchmark
+    betas = {}
+    if benchmark in prices.columns:
+        bench_ret = prices[benchmark].pct_change().dropna()
+        for t in available:
+            if t == benchmark:
+                betas[t] = 1.0
+                continue
+            common = returns[t].dropna().index.intersection(bench_ret.dropna().index)
+            if len(common) > 20:
+                cov = np.cov(returns[t].loc[common], bench_ret.loc[common])
+                betas[t] = cov[0, 1] / cov[1, 1] if cov[1, 1] != 0 else 0
+            else:
+                betas[t] = 0
+
+    # Correlation matrix
+    corr_matrix = returns[available].corr()
+
+    metrics = []
+    for t in available:
+        metrics.append({
+            "ticker": t,
+            "cumulative_return_pct": round(cum_returns[t], 2),
+            "annualized_vol_pct": round(vol[t], 2),
+            "beta": round(betas.get(t, 0), 3),
+        })
+
+    return {
+        "metrics": metrics,
+        "correlation_matrix": corr_matrix.round(3).to_dict(),
+        "data_range": f"{prices.index.min().strftime('%Y-%m-%d')} to {prices.index.max().strftime('%Y-%m-%d')}",
+        "tickers_analyzed": available,
+    }
+
+
+def analyze_ecosystem_event_impact(
+    prices: pd.DataFrame,
+    events: pd.DataFrame,
+    tickers: List[str],
+    window_start: int = -1,
+    window_end: int = 5,
+) -> pd.DataFrame:
+    """
+    Analyze event-window returns for an arbitrary set of tickers.
+    Returns a DataFrame with one row per event, one column per ticker.
+    """
+    price_start = prices.index.min()
+    price_end = prices.index.max()
+    available = [t for t in tickers if t in prices.columns]
+
+    rows = []
+    for _, event in events.iterrows():
+        event_date = pd.to_datetime(str(event["date"])[:10])
+        if event_date < price_start or event_date > price_end:
+            continue
+
+        returns = calculate_window_returns(
+            prices, str(event["date"])[:10], window_start, window_end
+        )
+
+        row = {
+            "event_date": event_date.strftime("%Y-%m-%d"),
+            "event_title": event["title"],
+            "severity": event["severity"],
+        }
+        for t in available:
+            row[t] = round(returns.get(t, 0), 2)
+        rows.append(row)
+
+    return pd.DataFrame(rows)
+
+
+# ============================================================
 # QUICK TEST
 # ============================================================
 
