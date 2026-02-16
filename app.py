@@ -257,7 +257,6 @@ PLOTLY_LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(10,10,25,0.4)",
     font=dict(family="Inter, sans-serif", size=12, color="rgba(250,250,250,0.7)"),
-    title=dict(font=dict(size=14, color="rgba(250,250,250,0.85)"), x=0, xanchor="left"),
     legend=dict(
         bgcolor="rgba(0,0,0,0)", borderwidth=0,
         font=dict(size=11, color="rgba(250,250,250,0.55)"),
@@ -268,6 +267,9 @@ PLOTLY_LAYOUT = dict(
     yaxis=dict(gridcolor="rgba(255,255,255,0.04)", zerolinecolor="rgba(255,255,255,0.06)"),
     hoverlabel=dict(bgcolor="rgba(20,20,40,0.95)", font_size=12, font_family="Inter"),
 )
+
+# Title styling applied separately to avoid duplicate keyword conflicts
+TITLE_STYLE = dict(font=dict(size=14, color="rgba(250,250,250,0.85)"), x=0, xanchor="left")
 
 COLORS = {
     "NVDA": "#76b900", "AMD": "#ed1c24", "INTC": "#0071c5", "SPY": "#555555",
@@ -369,7 +371,7 @@ with tab_chat:
         ]
         for i, (q, tag) in enumerate(suggestions):
             with cols[i % 2]:
-                if st.button(f"**{tag}** — {q}", key=f"suggest_{i}", use_container_width=True):
+                if st.button(f"**{tag}** — {q}", key=f"suggest_{i}", width="stretch"):
                     st.session_state.pending_question = q
                     st.rerun()
 
@@ -419,7 +421,7 @@ with tab_chat:
 
     with st.sidebar:
         st.markdown('<div class="section-header">Chat Controls</div>', unsafe_allow_html=True)
-        if st.button("Clear Conversation", use_container_width=True):
+        if st.button("Clear Conversation", width="stretch"):
             st.session_state.messages = []
             st.session_state.agent_logs = []
             st.rerun()
@@ -528,19 +530,19 @@ with tab1:
             ))
     fig_timeline.update_layout(
         **PLOTLY_LAYOUT,
-        title="Export Control Events vs NVDA 5-Day Reaction",
+        title=dict(text="Export Control Events vs NVDA 5-Day Reaction", **TITLE_STYLE),
         xaxis_title="", yaxis_title="NVDA Reaction (%)",
         height=420,
     )
     fig_timeline.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.15)", line_width=1)
-    st.plotly_chart(fig_timeline, use_container_width=True)
+    st.plotly_chart(fig_timeline, width="stretch")
 
     # Table
     display_df = filtered_df[["date", "title", "severity", "event_type", "nvda_reaction_pct", "amd_reaction_pct"]].copy()
     display_df["date"] = display_df["date"].dt.strftime("%Y-%m-%d")
     display_df.columns = ["Date", "Event", "Severity", "Type", "NVDA %", "AMD %"]
     st.dataframe(
-        display_df, use_container_width=True, hide_index=True,
+        display_df, width="stretch", hide_index=True,
         column_config={
             "NVDA %": st.column_config.NumberColumn(format="%+.1f%%"),
             "AMD %": st.column_config.NumberColumn(format="%+.1f%%"),
@@ -594,11 +596,11 @@ with tab2:
                 fig.add_vline(x=ev["date"], line_dash="dash", line_color="rgba(187,107,217,0.3)", line_width=1)
         fig.update_layout(
             **PLOTLY_LAYOUT,
-            title=f"Normalized Price Performance (100 = {base_date or 'Start'})",
+            title=dict(text=f"Normalized Price Performance (100 = {base_date or 'Start'})", **TITLE_STYLE),
             yaxis_title="Indexed Price", height=460,
         )
         fig.add_hline(y=100, line_dash="dash", line_color="rgba(255,255,255,0.1)", line_width=1)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         # CAR section
         st.markdown('<div class="section-header">Cumulative Abnormal Returns</div>', unsafe_allow_html=True)
@@ -629,11 +631,11 @@ with tab2:
             ))
             fig_car.update_layout(
                 **PLOTLY_LAYOUT,
-                title=f"{car_ticker} Cumulative Abnormal Return by Event [{win_start}, +{win_end}]",
+                title=dict(text=f"{car_ticker} Cumulative Abnormal Return by Event [{win_start}, +{win_end}]", **TITLE_STYLE),
                 yaxis_title="CAR (%)", height=380,
             )
             fig_car.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.15)")
-            st.plotly_chart(fig_car, use_container_width=True)
+            st.plotly_chart(fig_car, width="stretch")
 
 # ============================================================
 # TAB 3: ECOSYSTEM ANALYSIS
@@ -683,11 +685,11 @@ with tab3:
         fig_comp.update_layout(
             **PLOTLY_LAYOUT,
             barmode="group",
-            title=f"Event-Window Returns [{cwin_start}, +{cwin_end}]",
+            title=dict(text=f"Event-Window Returns [{cwin_start}, +{cwin_end}]", **TITLE_STYLE),
             yaxis_title="Return (%)", height=420,
         )
         fig_comp.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.15)")
-        st.plotly_chart(fig_comp, use_container_width=True)
+        st.plotly_chart(fig_comp, width="stretch")
 
         # Two-column: correlation + relative strength
         col1, col2 = st.columns(2)
@@ -702,11 +704,11 @@ with tab3:
             ))
             fig_corr.update_layout(
                 **PLOTLY_LAYOUT,
-                title=f"NVDA-AMD {corr_win}-Day Return Correlation",
+                title=dict(text=f"NVDA-AMD {corr_win}-Day Return Correlation", **TITLE_STYLE),
                 yaxis_title="Correlation", height=360,
             )
             fig_corr.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.1)")
-            st.plotly_chart(fig_corr, use_container_width=True)
+            st.plotly_chart(fig_corr, width="stretch")
 
         with col2:
             st.markdown('<div class="section-header">Relative Strength</div>', unsafe_allow_html=True)
@@ -719,10 +721,10 @@ with tab3:
             ))
             fig_rel.update_layout(
                 **PLOTLY_LAYOUT,
-                title="NVDA / AMD Price Ratio",
+                title=dict(text="NVDA / AMD Price Ratio", **TITLE_STYLE),
                 yaxis_title="Ratio", height=360,
             )
-            st.plotly_chart(fig_rel, use_container_width=True)
+            st.plotly_chart(fig_rel, width="stretch")
 
 # ============================================================
 # TAB 4: VOLATILITY SURFACE
@@ -807,7 +809,7 @@ with tab4:
                 font=dict(family="Inter", color="rgba(250,250,250,0.7)"),
                 height=580, margin=dict(l=0, r=0, t=40, b=0),
             )
-            st.plotly_chart(fig_3d, use_container_width=True)
+            st.plotly_chart(fig_3d, width="stretch")
 
             # Heatmap + legend
             st.markdown('<div class="section-header">Volatility Heatmap</div>', unsafe_allow_html=True)
@@ -831,10 +833,10 @@ with tab4:
                     ))
                     fig_heat.update_layout(
                         **PLOTLY_LAYOUT,
-                        title="IV Heatmap (Strike x Expiry)",
+                        title=dict(text="IV Heatmap (Strike x Expiry)", **TITLE_STYLE),
                         xaxis_title="Days to Expiry", yaxis_title="Moneyness (%)", height=420,
                     )
-                    st.plotly_chart(fig_heat, use_container_width=True)
+                    st.plotly_chart(fig_heat, width="stretch")
 
             with col2:
                 st.markdown("""
@@ -868,10 +870,10 @@ with tab4:
                     ))
                     fig_term.update_layout(
                         **PLOTLY_LAYOUT,
-                        title="ATM Implied Volatility Term Structure",
+                        title=dict(text="ATM Implied Volatility Term Structure", **TITLE_STYLE),
                         xaxis_title="Days to Expiry", yaxis_title="IV (%)", height=380,
                     )
-                    st.plotly_chart(fig_term, use_container_width=True)
+                    st.plotly_chart(fig_term, width="stretch")
 
                     if len(term_structure) >= 2:
                         short_term = term_structure[term_structure['days_to_expiry'] <= 30]['implied_vol'].mean()
@@ -898,11 +900,11 @@ with tab4:
                     fig_smile.add_vline(x=0, line_dash="dash", line_color="rgba(255,255,255,0.15)")
                     fig_smile.update_layout(
                         **PLOTLY_LAYOUT,
-                        title="30-Day Volatility Smile",
+                        title=dict(text="30-Day Volatility Smile", **TITLE_STYLE),
                         xaxis_title="Moneyness (%) — Negative = OTM Puts",
                         yaxis_title="IV (%)", height=380,
                     )
-                    st.plotly_chart(fig_smile, use_container_width=True)
+                    st.plotly_chart(fig_smile, width="stretch")
 
         else:
             st.warning("Could not build volatility surface from available options data.")
@@ -928,10 +930,10 @@ with tab4:
                 fig_hist.add_vline(x=ev["date"], line_dash="dash", line_color="rgba(187,107,217,0.25)", line_width=1)
         fig_hist.update_layout(
             **PLOTLY_LAYOUT,
-            title=f"{vol_ticker} Realized Volatility (purple lines = restriction events)",
+            title=dict(text=f"{vol_ticker} Realized Volatility (purple lines = restriction events)", **TITLE_STYLE),
             xaxis_title="", yaxis_title="Annualized Vol (%)", height=400,
         )
-        st.plotly_chart(fig_hist, use_container_width=True)
+        st.plotly_chart(fig_hist, width="stretch")
 
         m1, m2, m3 = st.columns(3)
         current_rv20 = hist_vol['rv_20'].iloc[-1]
