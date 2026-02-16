@@ -58,26 +58,48 @@ st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-html, body, [class*="st-"] {{
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+/* ── Global Reset ── */
+html, body, [class*="st-"],
+p, span, li, td, th, label, input, textarea, select, button {{
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }}
+p, li, td, [data-testid="stMarkdownContainer"] p {{
+    font-size: 0.84rem !important;
+    line-height: 1.65 !important;
+    color: {NAVY_LIGHT} !important;
+}}
+strong, b {{ color: {NAVY} !important; }}
 
+/* ── Hide chrome ── */
 #MainMenu {{visibility: hidden;}}
 footer {{visibility: hidden;}}
 header {{visibility: hidden;}}
 
+/* ── Root layout: flush edges ── */
+.stApp > header {{ display: none; }}
+.stApp {{
+    background: #f0f2f6;
+}}
 .block-container {{
-    padding-top: 0.8rem;
-    padding-bottom: 1rem;
-    max-width: 1400px;
+    padding: 0 !important;
+    max-width: 100% !important;
+}}
+/* Content padding lives inside a wrapper we inject, not block-container */
+.page-wrap {{
+    max-width: 100%;
+    padding: 0 2.5rem 1rem 2.5rem;
+    background: #ffffff;
+    min-height: 100vh;
 }}
 
-/* ── Brand Header ── */
+/* ── Brand Header: full-bleed ── */
 .brand-header {{
-    background: linear-gradient(135deg, {NAVY} 0%, {NAVY_LIGHT} 100%);
-    margin: -1rem -1rem 0 -1rem;
-    padding: 1.4rem 2rem 1rem 2rem;
+    background: {NAVY};
+    padding: 1.3rem 2.5rem 1rem 2.5rem;
     border-bottom: 3px solid {BLUE_ACCENT};
+    margin-bottom: 1.2rem;
 }}
 .brand-header .top-row {{
     display: flex;
@@ -85,154 +107,154 @@ header {{visibility: hidden;}}
     align-items: flex-start;
 }}
 .brand-header .logo {{
-    font-size: 1.6rem;
+    font-size: 1.45rem;
     font-weight: 800;
     color: #ffffff;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
 }}
 .brand-header .logo span {{ color: {BLUE_ACCENT}; }}
 .brand-header .tagline {{
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 0.15em;
+    font-size: 0.66rem;
+    color: rgba(255,255,255,0.50);
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    font-weight: 500;
-    margin-top: 2px;
+    font-weight: 600;
+    margin-top: 3px;
 }}
 .brand-header .header-meta {{
     text-align: right;
-    font-size: 0.6rem;
-    color: rgba(255,255,255,0.3);
-    letter-spacing: 0.06em;
-    line-height: 1.6;
+    font-size: 0.64rem;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
 }}
 .brand-header .header-meta strong {{
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.6);
     font-weight: 600;
 }}
 .brand-header .desc-bar {{
-    margin-top: 0.7rem;
-    padding-top: 0.6rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.4);
-    line-height: 1.5;
-    letter-spacing: 0.01em;
+    margin-top: 0.65rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    font-size: 0.74rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.55;
 }}
-
-/* ── Sub-header spacer ── */
-.sub-header-spacer {{ margin-bottom: 1.2rem; }}
 
 /* ── Metric Cards ── */
 [data-testid="stMetric"] {{
     background: #ffffff;
     border: 1px solid {BORDER};
-    border-radius: 8px;
-    padding: 18px 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    border-radius: 6px;
+    padding: 16px 18px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     border-left: 3px solid {NAVY_LIGHT};
 }}
 [data-testid="stMetricLabel"] {{
-    font-size: 0.68rem !important;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
     color: {SLATE} !important;
 }}
 [data-testid="stMetricValue"] {{
-    font-size: 1.4rem !important;
-    font-weight: 700;
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
     color: {NAVY} !important;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.02em !important;
 }}
 [data-testid="stMetricDelta"] {{
-    font-size: 0.72rem !important;
+    font-size: 0.74rem !important;
 }}
 
 /* ── Tab Navigation ── */
 .stTabs [data-baseweb="tab-list"] {{
     gap: 0;
-    background: {BG_SUBTLE};
-    border-radius: 8px;
+    background: #f1f5f9;
+    border-radius: 6px;
     padding: 3px;
     border: 1px solid {BORDER};
 }}
 .stTabs [data-baseweb="tab"] {{
-    height: 42px;
-    border-radius: 6px;
+    height: 40px;
+    border-radius: 5px;
     font-weight: 500;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: {SLATE};
-    padding: 0 18px;
+    padding: 0 16px;
     white-space: nowrap;
 }}
 .stTabs [aria-selected="true"] {{
     background: {NAVY_LIGHT} !important;
     color: #ffffff !important;
     font-weight: 600;
-    box-shadow: 0 1px 4px rgba(15,29,51,0.2);
+    box-shadow: 0 1px 3px rgba(15,29,51,0.18);
 }}
 
 /* ── Sidebar ── */
 section[data-testid="stSidebar"] {{
-    background: linear-gradient(180deg, {NAVY} 0%, {NAVY_LIGHT} 100%);
-    border-right: 1px solid rgba(255,255,255,0.08);
+    background: {NAVY};
+    border-right: 1px solid rgba(255,255,255,0.06);
 }}
 section[data-testid="stSidebar"] * {{
-    color: rgba(255,255,255,0.85) !important;
+    color: rgba(255,255,255,0.88) !important;
+}}
+section[data-testid="stSidebar"] p {{
+    color: rgba(255,255,255,0.70) !important;
+    font-size: 0.78rem !important;
 }}
 section[data-testid="stSidebar"] label {{
-    color: rgba(255,255,255,0.55) !important;
-    font-size: 0.75rem !important;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.50) !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
 }}
 section[data-testid="stSidebar"] .stSelectbox > div > div {{
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.10);
 }}
 section[data-testid="stSidebar"] .stMarkdown h2,
 section[data-testid="stSidebar"] .stMarkdown h3 {{
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(255,255,255,0.4) !important;
-    margin-top: 1.4rem;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.12em !important;
+    color: rgba(255,255,255,0.35) !important;
+    margin-top: 1.4rem !important;
 }}
 section[data-testid="stSidebar"] [data-testid="stAlert"] {{
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.75rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.76rem;
 }}
 
-/* ── Section Headers ── */
+/* ── Section Headers (unified) ── */
 .section-header {{
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: {NAVY_LIGHT};
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
+    letter-spacing: 0.12em;
+    color: {NAVY};
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.45rem;
     border-bottom: 2px solid {NAVY_LIGHT};
     display: block;
 }}
 
-/* ── Callout Boxes ── */
+/* ── Callout Boxes (unified font) ── */
 .callout {{
     background: {BG_SUBTLE};
     border: 1px solid {BORDER};
     border-left: 3px solid {NAVY_LIGHT};
-    border-radius: 6px;
+    border-radius: 5px;
     padding: 14px 18px;
-    margin: 0.8rem 0 1.2rem 0;
+    margin: 0.6rem 0 1.1rem 0;
     font-size: 0.82rem;
     line-height: 1.65;
-    color: {SLATE};
+    color: #334155;
 }}
-.callout strong {{ color: {NAVY}; }}
+.callout strong {{ color: {NAVY} !important; }}
 .callout-blue {{
     background: #eff6ff;
     border-color: #bfdbfe;
@@ -240,90 +262,90 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
 }}
 .callout-method {{
     background: #f5f3ff;
-    border-color: #e9d5ff;
+    border-color: #ddd6fe;
     border-left-color: #7c3aed;
 }}
 
-/* ── Observation / Takeaway boxes ── */
+/* ── Observation / Takeaway (unified font) ── */
 .obs-grid {{
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin: 0.8rem 0 1rem 0;
+    margin: 0.6rem 0 1rem 0;
 }}
 .obs-card {{
     background: #ffffff;
     border: 1px solid {BORDER};
-    border-radius: 8px;
-    padding: 14px 16px;
-    font-size: 0.8rem;
-    line-height: 1.55;
-    color: {SLATE};
+    border-radius: 6px;
+    padding: 13px 16px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: #334155;
 }}
 .obs-card .obs-label {{
-    font-size: 0.62rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.10em;
     color: {NAVY_MID};
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }}
 .takeaway-box {{
-    background: linear-gradient(135deg, {NAVY} 0%, {NAVY_LIGHT} 100%);
-    border-radius: 8px;
+    background: {NAVY};
+    border-radius: 6px;
     padding: 18px 22px;
     margin: 1rem 0 1.5rem 0;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.88);
     font-size: 0.82rem;
     line-height: 1.65;
 }}
 .takeaway-box .tk-title {{
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.40);
     margin-bottom: 8px;
 }}
 .takeaway-box ul {{ margin: 6px 0 0 0; padding-left: 18px; }}
-.takeaway-box li {{ margin-bottom: 4px; }}
+.takeaway-box li {{ margin-bottom: 5px; color: rgba(255,255,255,0.85); }}
 
 /* ── Spot Price Banner ── */
 .spot-banner {{
-    background: linear-gradient(135deg, {NAVY} 0%, {NAVY_LIGHT} 100%);
-    border-radius: 8px;
-    padding: 14px 22px;
-    margin-bottom: 1.2rem;
+    background: {NAVY};
+    border-radius: 6px;
+    padding: 13px 22px;
+    margin-bottom: 1.1rem;
     display: inline-block;
     border: 1px solid {NAVY_MID};
 }}
 .spot-banner .label {{
-    color: rgba(255,255,255,0.5);
-    font-size: 0.68rem;
+    color: rgba(255,255,255,0.50);
+    font-size: 0.70rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.10em;
     font-weight: 600;
 }}
 .spot-banner .price {{
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: #ffffff;
     margin-left: 8px;
 }}
 .spot-banner .meta {{
     color: rgba(255,255,255,0.35);
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     margin-left: 12px;
 }}
 
 /* ── Dataframes / Chat / Buttons / Misc ── */
 [data-testid="stDataFrame"] {{
     border: 1px solid {BORDER};
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
 }}
 [data-testid="stChatMessage"] {{
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid {BORDER};
     padding: 1rem 1.2rem;
     margin-bottom: 0.5rem;
@@ -331,39 +353,46 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
 }}
 .stButton > button {{
     border: 1px solid {BORDER};
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 0.8rem;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 0.78rem;
     transition: all 0.15s ease;
     background: #ffffff;
     color: {NAVY_LIGHT};
 }}
 .stButton > button:hover {{
     border-color: {NAVY_LIGHT};
-    background: {BG_SUBTLE};
-    box-shadow: 0 1px 4px rgba(15,29,51,0.08);
+    background: #f1f5f9;
+    box-shadow: 0 1px 3px rgba(15,29,51,0.06);
     color: {NAVY};
 }}
 hr {{
     border-color: {BORDER} !important;
-    margin: 1.5rem 0 !important;
+    margin: 1.2rem 0 !important;
 }}
 .stAlert {{
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 0.82rem;
+}}
+/* st.caption uniformity */
+[data-testid="stCaptionContainer"] p {{
+    font-size: 0.78rem !important;
+    color: {SLATE} !important;
+    line-height: 1.55 !important;
 }}
 
 /* ── Footer ── */
 .pro-footer {{
     text-align: center;
-    font-size: 0.62rem;
+    font-size: 0.68rem;
     color: {SLATE};
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     padding: 2rem 0 0.5rem 0;
     border-top: 1px solid {BORDER};
     margin-top: 3rem;
     line-height: 1.8;
 }}
+.pro-footer strong {{ color: {NAVY_LIGHT} !important; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -415,22 +444,22 @@ st.markdown(f"""
 <div class="brand-header">
     <div class="top-row">
         <div>
-            <div class="logo"><span>N</span>EXUS <span style="font-size:0.85em;">v2</span></div>
+            <div class="logo"><span>N</span>EXUS<span style="font-weight:400; font-size:0.65em; color:rgba(255,255,255,0.35); margin-left:6px;">v2.0</span></div>
             <div class="tagline">Semiconductor Export Control Research Platform</div>
         </div>
         <div class="header-meta">
             <strong>Purdue University</strong> &middot; Daniels School of Business<br>
-            MGMT 69000: Mastering AI for Finance<br>
-            Prof. Cinder Zhang &middot; Spring 2026
+            MGMT 69000: Mastering AI for Finance &middot; Prof. Cinder Zhang<br>
+            Spring 2026
         </div>
     </div>
     <div class="desc-bar">
-        Quantitative analysis of U.S. Bureau of Industry & Security (BIS) semiconductor export restrictions
-        and their impact on equity valuations, competitive dynamics, and options-implied risk premia
-        across the global semiconductor supply chain. Powered by RAG-grounded AI with live market data tools.
+        Quantitative analysis of U.S. Bureau of Industry &amp; Security (BIS) semiconductor export
+        restrictions and their impact on equity valuations, competitive dynamics, and options-implied
+        risk premia across the global semiconductor supply chain. Powered by RAG-grounded AI with
+        live market data tools.
     </div>
 </div>
-<div class="sub-header-spacer"></div>
 """, unsafe_allow_html=True)
 
 tab_chat, tab1, tab2, tab3, tab4 = st.tabs([
