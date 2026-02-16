@@ -110,19 +110,24 @@ header {{visibility: hidden;}}
     background: transparent;
 }}
 
-/* ── Brand Header (full-bleed blue) ── */
+/* ── Brand Header (full-bleed navy) ── */
 .brand-header {{
-    background: {BLUE_ACCENT};
+    background: {NAVY};
     /* Full-bleed: break out of max-width container edge-to-edge */
-    margin-left: calc(-50vw + 50%) !important;
-    margin-right: calc(-50vw + 50%) !important;
-    padding-left: calc(50vw - 50%) !important;
-    padding-right: calc(50vw - 50%) !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    padding-left: 50vw !important;
+    padding-right: 50vw !important;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    box-sizing: border-box;
     margin-top: -1rem;
     margin-bottom: 1.2rem;
     padding-top: 1.2rem;
     padding-bottom: 0.9rem;
-    border-bottom: 3px solid {NAVY};
+    border-bottom: 3px solid {BLUE_ACCENT};
 }}
 /* Inner content stays at original width */
 .brand-header .header-inner {{
@@ -141,7 +146,7 @@ header {{visibility: hidden;}}
     color: #ffffff;
     letter-spacing: -0.03em;
 }}
-.brand-header .logo span {{ color: #ffffff; font-weight: 300; }}
+.brand-header .logo span {{ color: {BLUE_ACCENT}; }}
 .brand-header .tagline {{
     font-size: 0.66rem;
     color: rgba(255,255,255,0.80);
