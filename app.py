@@ -79,11 +79,15 @@ header {{visibility: hidden;}}
 
 /* ── Layout ── */
 .stApp > header {{ display: none; }}
-.stApp {{ background: #ffffff; }}
+.stApp {{ background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); }}
 .block-container {{
     padding-top: 0 !important;
-    padding-bottom: 1rem !important;
+    padding-bottom: 2rem !important;
     max-width: 1400px !important;
+}}
+/* Ensure the main area fills nicely */
+[data-testid="stAppViewContainer"] {{
+    background: transparent;
 }}
 
 /* ── Brand Header ── */
@@ -139,8 +143,12 @@ header {{visibility: hidden;}}
     border: 1px solid {BORDER};
     border-radius: 6px;
     padding: 16px 18px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-    border-left: 3px solid {NAVY_LIGHT};
+    box-shadow: 0 1px 4px rgba(15,29,51,0.05);
+    border-top: 2px solid {NAVY_LIGHT};
+    transition: box-shadow 0.15s ease;
+}}
+[data-testid="stMetric"]:hover {{
+    box-shadow: 0 2px 8px rgba(15,29,51,0.08);
 }}
 [data-testid="stMetricLabel"] {{
     font-size: 0.7rem !important;
@@ -278,10 +286,11 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     background: #ffffff;
     border: 1px solid {BORDER};
     border-radius: 6px;
-    padding: 13px 16px;
+    padding: 14px 18px;
     font-size: 0.82rem;
     line-height: 1.6;
     color: #334155;
+    box-shadow: 0 1px 3px rgba(15,29,51,0.04);
 }}
 .obs-card .obs-label {{
     font-size: 0.65rem;
@@ -339,32 +348,39 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     margin-left: 12px;
 }}
 
-/* ── Dataframes / Chat / Buttons / Misc ── */
+/* ── Dataframes ── */
 [data-testid="stDataFrame"] {{
     border: 1px solid {BORDER};
     border-radius: 6px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(15,29,51,0.04);
 }}
+
+/* ── Chat Messages ── */
 [data-testid="stChatMessage"] {{
     border-radius: 8px;
     border: 1px solid {BORDER};
     padding: 1rem 1.2rem;
     margin-bottom: 0.5rem;
     background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15,29,51,0.03);
 }}
+
+/* ── Buttons ── */
 .stButton > button {{
     border: 1px solid {BORDER};
     border-radius: 5px;
     font-weight: 600;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     transition: all 0.15s ease;
     background: #ffffff;
     color: {NAVY_LIGHT};
+    box-shadow: 0 1px 2px rgba(15,29,51,0.04);
 }}
 .stButton > button:hover {{
-    border-color: {NAVY_LIGHT};
-    background: #f1f5f9;
-    box-shadow: 0 1px 3px rgba(15,29,51,0.06);
+    border-color: {NAVY_MID};
+    background: #f8fafc;
+    box-shadow: 0 2px 6px rgba(15,29,51,0.08);
     color: {NAVY};
 }}
 hr {{
@@ -404,6 +420,21 @@ hr {{
 }}
 /* Code blocks in evidence */
 .stCodeBlock {{ border-radius: 5px !important; }}
+
+/* ── Plotly chart containers ── */
+[data-testid="stPlotlyChart"] {{
+    border: 1px solid {BORDER};
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(15,29,51,0.04);
+    margin-bottom: 0.3rem;
+}}
+
+/* ── Spinner text ── */
+.stSpinner > div {{
+    font-size: 0.82rem !important;
+    color: {SLATE} !important;
+}}
 
 /* ── Footer ── */
 .pro-footer {{
