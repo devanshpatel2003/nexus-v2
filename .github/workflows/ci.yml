@@ -90,7 +90,7 @@ jobs:
       - name: Run data module import checks
         run: |
           python -c "from data.export_control_events import get_events_dataframe; df = get_events_dataframe(); assert len(df) > 0; print(f'Events loaded: {len(df)}')"
-          python -c "from data.universe import UNIVERSE; assert len(UNIVERSE) > 0; print(f'Universe: {len(UNIVERSE)} tickers')"
+          python -c "from data.universe import ECOSYSTEM, ALL_TICKERS; assert len(ECOSYSTEM) > 0; print(f'Ecosystem groups: {len(ECOSYSTEM)}, Tickers: {len(ALL_TICKERS)}')"
           python -c "from core.llm.prompts import SYSTEM_PROMPT; assert len(SYSTEM_PROMPT) > 100; print('System prompt OK')"
           python -c "from core.config import LLM_MODEL, EMBEDDING_MODEL; print(f'Models: {LLM_MODEL}, {EMBEDDING_MODEL}')"
 
