@@ -87,7 +87,7 @@ p, span, li, td, th, label, input, textarea, select, button {{
     color: #ffffff !important;
 }}
 .brand-header strong, .brand-header b {{
-    color: rgba(255,255,255,0.6) !important;
+    color: rgba(255,255,255,0.90) !important;
 }}
 .spot-banner, .spot-banner * {{
     color: rgba(255,255,255,0.88) !important;
@@ -110,12 +110,25 @@ header {{visibility: hidden;}}
     background: transparent;
 }}
 
-/* ── Brand Header ── */
+/* ── Brand Header (full-bleed blue) ── */
 .brand-header {{
-    background: {NAVY};
-    padding: 1.2rem 2rem 0.9rem 2rem;
-    border-bottom: 3px solid {BLUE_ACCENT};
-    margin: -1rem -2rem 1.2rem -2rem;
+    background: {BLUE_ACCENT};
+    /* Full-bleed: break out of max-width container edge-to-edge */
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    padding-left: calc(50vw - 50%) !important;
+    padding-right: calc(50vw - 50%) !important;
+    margin-top: -1rem;
+    margin-bottom: 1.2rem;
+    padding-top: 1.2rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 3px solid {NAVY};
+}}
+/* Inner content stays at original width */
+.brand-header .header-inner {{
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }}
 .brand-header .top-row {{
     display: flex;
@@ -128,10 +141,10 @@ header {{visibility: hidden;}}
     color: #ffffff;
     letter-spacing: -0.03em;
 }}
-.brand-header .logo span {{ color: {BLUE_ACCENT}; }}
+.brand-header .logo span {{ color: #ffffff; font-weight: 300; }}
 .brand-header .tagline {{
     font-size: 0.66rem;
-    color: rgba(255,255,255,0.50);
+    color: rgba(255,255,255,0.80);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     font-weight: 600;
@@ -140,20 +153,20 @@ header {{visibility: hidden;}}
 .brand-header .header-meta {{
     text-align: right;
     font-size: 0.64rem;
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.70);
     letter-spacing: 0.04em;
     line-height: 1.7;
 }}
 .brand-header .header-meta strong {{
-    color: rgba(255,255,255,0.6) !important;
+    color: rgba(255,255,255,0.92) !important;
     font-weight: 600;
 }}
 .brand-header .desc-bar {{
     margin-top: 0.65rem;
     padding-top: 0.55rem;
-    border-top: 1px solid rgba(255,255,255,0.10);
+    border-top: 1px solid rgba(255,255,255,0.22);
     font-size: 0.74rem;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.75);
     line-height: 1.55;
 }}
 
@@ -611,9 +624,10 @@ SEVERITY_COLORS = {"Low": "#16a34a", "Medium": "#d97706", "High": "#dc2626", "Cr
 
 st.markdown(f"""
 <div class="brand-header">
+  <div class="header-inner">
     <div class="top-row">
         <div>
-            <div class="logo"><span>N</span>EXUS<span style="font-weight:400; font-size:0.65em; color:rgba(255,255,255,0.35); margin-left:6px;">v2.0</span></div>
+            <div class="logo"><span>N</span>EXUS<span style="font-weight:400; font-size:0.65em; color:rgba(255,255,255,0.55); margin-left:6px;">v2.0</span></div>
             <div class="tagline">Semiconductor Export Control Research Platform</div>
         </div>
         <div class="header-meta">
@@ -628,6 +642,7 @@ st.markdown(f"""
         risk premia across the global semiconductor supply chain. Powered by RAG-grounded AI with
         live market data tools.
     </div>
+  </div>
 </div>
 """, unsafe_allow_html=True)
 
