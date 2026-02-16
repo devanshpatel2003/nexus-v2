@@ -58,82 +58,71 @@ st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-/* ── Global Reset ── */
+/* ═══════════════════════════════════════════
+   SCREENER.IN-INSPIRED INSTITUTIONAL THEME
+   Clean, flat, data-first, whitespace-driven
+   ═══════════════════════════════════════════ */
+
+/* ── Global Typography ── */
 html, body, [class*="st-"],
 p, span, li, td, th, label, input, textarea, select, button {{
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }}
-
-/* ── Main-area text colors (scoped — NOT sidebar, NOT navy boxes) ── */
-[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] p,
-[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] li,
-[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] td {{
-    font-size: 0.84rem !important;
-    line-height: 1.65 !important;
-    color: {NAVY_LIGHT} !important;
+/* Main content text — scoped to main area only */
+[data-testid="stAppViewContainer"] p,
+[data-testid="stAppViewContainer"] li {{
+    font-size: 0.88rem !important;
+    line-height: 1.7 !important;
+    color: #333 !important;
 }}
-[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] strong,
-[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] b {{
-    color: {NAVY} !important;
+[data-testid="stAppViewContainer"] strong,
+[data-testid="stAppViewContainer"] b {{
+    color: #111 !important;
+    font-weight: 600 !important;
 }}
-
-/* ── Override: white text inside navy-bg containers ── */
-.takeaway-box, .takeaway-box p, .takeaway-box li, .takeaway-box strong, .takeaway-box b {{
-    color: rgba(255,255,255,0.88) !important;
-}}
-.takeaway-box strong, .takeaway-box b {{
-    color: #ffffff !important;
-}}
-.brand-header strong, .brand-header b {{
+/* Override for navy-bg containers */
+.takeaway-box, .takeaway-box p, .takeaway-box li {{
     color: rgba(255,255,255,0.90) !important;
 }}
-.spot-banner, .spot-banner * {{
-    color: rgba(255,255,255,0.88) !important;
+.takeaway-box strong, .takeaway-box b {{
+    color: #fff !important;
+}}
+.brand-header, .brand-header * {{
+    color: inherit !important;
 }}
 
-/* ── Hide chrome ── */
+/* ── Hide Streamlit chrome ── */
 #MainMenu {{visibility: hidden;}}
 footer {{visibility: hidden;}}
 header {{visibility: hidden;}}
-
-/* ── Layout ── */
 .stApp > header {{ display: none; }}
-.stApp {{ background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); }}
-.block-container {{
-    padding-top: 0 !important;
-    padding-bottom: 2rem !important;
-    max-width: 1400px !important;
+
+/* ── Layout — screener.in style: white, clean, max 1200px ── */
+.stApp {{
+    background: #ffffff !important;
 }}
 [data-testid="stAppViewContainer"] {{
-    background: transparent;
+    background: #ffffff !important;
+}}
+.block-container {{
+    padding: 0 1rem 2rem 1rem !important;
+    max-width: 1200px !important;
 }}
 
-/* ── Brand Header (full-bleed navy) ── */
+/* ════════════════════════════
+   HEADER — screener.in top bar
+   White bg, dark text, thin bottom border
+   ════════════════════════════ */
 .brand-header {{
-    background: {NAVY};
-    /* Full-bleed: break out of max-width container edge-to-edge */
-    margin-left: -50vw !important;
-    margin-right: -50vw !important;
-    padding-left: 50vw !important;
-    padding-right: 50vw !important;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    box-sizing: border-box;
-    margin-top: -1rem;
-    margin-bottom: 1.2rem;
-    padding-top: 1.2rem;
-    padding-bottom: 0.9rem;
-    border-bottom: 3px solid {BLUE_ACCENT};
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+    padding: 18px 0 14px 0;
+    margin: 0 0 20px 0;
 }}
-/* Inner content stays at original width */
 .brand-header .header-inner {{
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
 }}
 .brand-header .top-row {{
     display: flex;
@@ -141,94 +130,105 @@ header {{visibility: hidden;}}
     align-items: flex-start;
 }}
 .brand-header .logo {{
-    font-size: 1.45rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    color: #ffffff;
+    color: #111 !important;
     letter-spacing: -0.03em;
 }}
-.brand-header .logo span {{ color: {BLUE_ACCENT}; }}
+.brand-header .logo span {{
+    color: {BLUE_ACCENT} !important;
+}}
 .brand-header .tagline {{
-    font-size: 0.66rem;
-    color: rgba(255,255,255,0.80);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-top: 3px;
+    font-size: 0.72rem;
+    color: #888 !important;
+    letter-spacing: 0.04em;
+    font-weight: 400;
+    margin-top: 2px;
 }}
 .brand-header .header-meta {{
     text-align: right;
-    font-size: 0.64rem;
-    color: rgba(255,255,255,0.70);
-    letter-spacing: 0.04em;
+    font-size: 0.72rem;
+    color: #888 !important;
     line-height: 1.7;
 }}
 .brand-header .header-meta strong {{
-    color: rgba(255,255,255,0.92) !important;
+    color: #333 !important;
     font-weight: 600;
 }}
 .brand-header .desc-bar {{
-    margin-top: 0.65rem;
-    padding-top: 0.55rem;
-    border-top: 1px solid rgba(255,255,255,0.22);
-    font-size: 0.74rem;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.55;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    font-size: 0.82rem;
+    color: #666 !important;
+    line-height: 1.6;
 }}
 
-/* ── Metric Cards ── */
+/* ════════════════════════════
+   METRICS — screener.in key ratios row
+   No borders, no cards, just clean numbers
+   ════════════════════════════ */
 [data-testid="stMetric"] {{
-    background: #ffffff;
-    border: 1px solid {BORDER};
-    border-radius: 6px;
-    padding: 16px 18px;
-    box-shadow: 0 1px 4px rgba(15,29,51,0.05);
-    border-top: 2px solid {NAVY_LIGHT};
-    transition: box-shadow 0.15s ease;
+    background: transparent !important;
+    border: none !important;
+    border-right: 1px solid #eee !important;
+    border-radius: 0 !important;
+    padding: 8px 16px !important;
+    box-shadow: none !important;
 }}
 [data-testid="stMetric"]:hover {{
-    box-shadow: 0 2px 8px rgba(15,29,51,0.08);
+    box-shadow: none !important;
 }}
 [data-testid="stMetricLabel"] {{
-    font-size: 0.7rem !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
-    color: {SLATE} !important;
+    font-size: 0.72rem !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    color: #888 !important;
 }}
 [data-testid="stMetricValue"] {{
-    font-size: 1.35rem !important;
+    font-size: 1.25rem !important;
     font-weight: 700 !important;
-    color: {NAVY} !important;
-    letter-spacing: -0.02em !important;
+    color: #111 !important;
+    letter-spacing: -0.01em !important;
 }}
 [data-testid="stMetricDelta"] {{
-    font-size: 0.74rem !important;
+    font-size: 0.76rem !important;
 }}
 
-/* ── Tab Navigation ── */
+/* ════════════════════════════
+   TAB NAVIGATION — screener.in anchor-link style
+   Flat, text-based, underline active
+   ════════════════════════════ */
 .stTabs [data-baseweb="tab-list"] {{
     gap: 0;
-    background: #f1f5f9;
-    border-radius: 6px;
-    padding: 3px;
-    border: 1px solid {BORDER};
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-bottom: 1px solid #ddd !important;
 }}
 .stTabs [data-baseweb="tab-list"] button[data-baseweb="tab"] {{
-    height: 40px;
-    border-radius: 5px;
-    font-weight: 500;
-    font-size: 0.8rem !important;
-    color: {SLATE} !important;
-    padding: 0 16px;
+    height: 38px;
+    border-radius: 0 !important;
+    font-weight: 400;
+    font-size: 0.84rem !important;
+    color: #555 !important;
+    padding: 0 18px;
     white-space: nowrap;
-    border-bottom: none !important;
+    border-bottom: 2px solid transparent !important;
+    background: transparent !important;
+    transition: color 0.15s, border-color 0.15s;
+}}
+.stTabs [data-baseweb="tab-list"] button[data-baseweb="tab"]:hover {{
+    color: #111 !important;
 }}
 .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {{
-    background: {NAVY_LIGHT} !important;
-    color: #ffffff !important;
+    background: transparent !important;
+    color: #111 !important;
     font-weight: 600 !important;
-    box-shadow: 0 1px 3px rgba(15,29,51,0.18);
-    border-bottom: none !important;
+    border-bottom: 2px solid {BLUE_ACCENT} !important;
+    box-shadow: none !important;
 }}
 .stTabs [data-baseweb="tab-highlight"] {{
     display: none !important;
@@ -237,7 +237,9 @@ header {{visibility: hidden;}}
     display: none !important;
 }}
 
-/* ── Sidebar ── */
+/* ════════════════════════════
+   SIDEBAR — dark sidebar (kept)
+   ════════════════════════════ */
 section[data-testid="stSidebar"] {{
     background: {NAVY};
     border-right: 1px solid rgba(255,255,255,0.06);
@@ -252,7 +254,7 @@ section[data-testid="stSidebar"] b {{
     color: rgba(255,255,255,0.88) !important;
 }}
 section[data-testid="stSidebar"] p {{
-    font-size: 0.78rem !important;
+    font-size: 0.8rem !important;
 }}
 section[data-testid="stSidebar"] label {{
     color: rgba(255,255,255,0.50) !important;
@@ -277,7 +279,7 @@ section[data-testid="stSidebar"] .stMarkdown h3 {{
 section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.08);
-    font-size: 0.76rem;
+    font-size: 0.78rem;
 }}
 section[data-testid="stSidebar"] [data-testid="stAlert"] p,
 section[data-testid="stSidebar"] [data-testid="stAlert"] span {{
@@ -293,292 +295,298 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
     color: #ffffff !important;
 }}
 
-/* ── Section Headers (unified) ── */
+/* ════════════════════════════
+   SECTION HEADERS — screener.in style
+   Simple left-aligned text with thin bottom line
+   ════════════════════════════ */
 .section-header {{
-    font-size: 0.7rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: {NAVY};
-    margin-bottom: 0.9rem;
-    padding-bottom: 0.45rem;
-    border-bottom: 2px solid {NAVY_LIGHT};
+    color: #111;
+    margin: 1.5rem 0 0.8rem 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
     display: block;
+    text-transform: none;
+    letter-spacing: normal;
 }}
 
-/* ── Callout Boxes ── */
+/* ════════════════════════════
+   CALLOUT / INFO BOXES — light, flat, minimal
+   ════════════════════════════ */
 .callout {{
-    background: {BG_SUBTLE};
-    border: 1px solid {BORDER};
-    border-left: 3px solid {NAVY_LIGHT};
-    border-radius: 5px;
-    padding: 14px 18px;
-    margin: 0.6rem 0 1.1rem 0;
-    font-size: 0.82rem;
+    background: #f9f9f9;
+    border: none;
+    border-left: 3px solid #ddd;
+    border-radius: 2px;
+    padding: 12px 16px;
+    margin: 8px 0 16px 0;
+    font-size: 0.85rem;
     line-height: 1.65;
-    color: #334155;
+    color: #555;
 }}
-.callout strong {{ color: {NAVY} !important; }}
+.callout strong {{ color: #111 !important; }}
 .callout-blue {{
-    background: #eff6ff;
-    border-color: #bfdbfe;
+    background: #f0f7ff;
     border-left-color: {BLUE_ACCENT};
 }}
 .callout-method {{
-    background: #f5f3ff;
-    border-color: #ddd6fe;
+    background: #f8f5ff;
     border-left-color: #7c3aed;
 }}
 
-/* ── Observation / Takeaway ── */
+/* ════════════════════════════
+   OBSERVATIONS — flat, no shadow, thin borders
+   ════════════════════════════ */
 .obs-grid {{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin: 0.6rem 0 1rem 0;
+    gap: 12px;
+    margin: 8px 0 16px 0;
 }}
 .obs-card {{
-    background: #ffffff;
-    border: 1px solid {BORDER};
-    border-radius: 6px;
-    padding: 14px 18px;
-    font-size: 0.82rem;
-    line-height: 1.6;
-    color: #334155;
-    box-shadow: 0 1px 3px rgba(15,29,51,0.04);
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: #444;
+    box-shadow: none;
 }}
 .obs-card .obs-label {{
-    font-size: 0.65rem;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.10em;
-    color: {NAVY_MID};
-    margin-bottom: 5px;
+    letter-spacing: 0.06em;
+    color: #888;
+    margin-bottom: 4px;
 }}
-.obs-card strong {{ color: {NAVY} !important; }}
+.obs-card strong {{ color: #111 !important; }}
+
+/* ════════════════════════════
+   TAKEAWAY BOXES — clean dark box, good contrast
+   ════════════════════════════ */
 .takeaway-box {{
-    background: {NAVY};
-    border-radius: 6px;
-    padding: 18px 22px;
-    margin: 1rem 0 1.5rem 0;
-    color: rgba(255,255,255,0.88);
-    font-size: 0.82rem;
-    line-height: 1.65;
+    background: #1a1a2e;
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 16px 0 24px 0;
+    font-size: 0.85rem;
+    line-height: 1.7;
 }}
 .takeaway-box .tk-title {{
-    font-size: 0.68rem;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(255,255,255,0.40);
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.45);
     margin-bottom: 8px;
 }}
-.takeaway-box ul {{ margin: 6px 0 0 0; padding-left: 18px; }}
-.takeaway-box li {{ margin-bottom: 5px; color: rgba(255,255,255,0.85) !important; }}
-.takeaway-box strong {{ color: #ffffff !important; }}
+.takeaway-box ul {{ margin: 4px 0 0 0; padding-left: 18px; }}
+.takeaway-box li {{ margin-bottom: 6px; color: rgba(255,255,255,0.88) !important; }}
+.takeaway-box strong {{ color: #fff !important; }}
 
-/* ── Spot Price Banner ── */
+/* ════════════════════════════
+   SPOT PRICE BANNER — screener.in price header style
+   Large number on white bg
+   ════════════════════════════ */
 .spot-banner {{
-    background: {NAVY};
-    border-radius: 6px;
-    padding: 13px 22px;
-    margin-bottom: 1.1rem;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 16px;
     display: inline-block;
-    border: 1px solid {NAVY_MID};
+    border: none;
 }}
 .spot-banner .label {{
-    color: rgba(255,255,255,0.50) !important;
-    font-size: 0.70rem;
+    color: #888 !important;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.10em;
-    font-weight: 600;
+    letter-spacing: 0.06em;
+    font-weight: 500;
 }}
 .spot-banner .price {{
-    font-size: 1.35rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #ffffff !important;
+    color: #111 !important;
     margin-left: 8px;
 }}
 .spot-banner .meta {{
-    color: rgba(255,255,255,0.35) !important;
-    font-size: 0.74rem;
-    margin-left: 12px;
+    color: #888 !important;
+    font-size: 0.78rem;
+    margin-left: 10px;
 }}
 
-/* ── Dataframes ── */
+/* ════════════════════════════
+   DATAFRAMES — screener.in table style
+   ════════════════════════════ */
 [data-testid="stDataFrame"] {{
-    border: 1px solid {BORDER};
-    border-radius: 6px;
+    border: 1px solid #eee;
+    border-radius: 2px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(15,29,51,0.04);
+    box-shadow: none;
 }}
 
-/* ── Chat Messages ── */
+/* ════════════════════════════
+   CHAT MESSAGES — clean, minimal
+   ════════════════════════════ */
 [data-testid="stChatMessage"] {{
-    border-radius: 8px;
-    border: 1px solid {BORDER};
-    padding: 1rem 1.2rem;
-    margin-bottom: 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    padding: 14px 16px;
+    margin-bottom: 8px;
     background: #ffffff;
-    box-shadow: 0 1px 2px rgba(15,29,51,0.03);
-    gap: 0.8rem !important;
+    box-shadow: none;
+    gap: 12px !important;
 }}
-/* User messages — subtle tint */
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {{
-    background: {BG_SUBTLE};
-    border-color: {BORDER};
+    background: #f9f9f9;
 }}
-/* Hide default emoji avatars, replace with clean initials */
 [data-testid="stChatMessage"] [data-testid="chatAvatarIcon-user"],
 [data-testid="stChatMessage"] [data-testid="chatAvatarIcon-assistant"] {{
     display: none !important;
 }}
-/* Custom avatar badge */
 [data-testid="stChatMessage"] > div:first-child {{
-    min-width: 32px !important;
-    max-width: 32px !important;
-    height: 32px !important;
-    border-radius: 6px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 0.72rem !important;
+    font-size: 0.7rem !important;
     font-weight: 700 !important;
-    letter-spacing: 0.02em !important;
     flex-shrink: 0 !important;
 }}
-/* Chat text styling */
 [data-testid="stChatMessage"] p {{
-    font-size: 0.84rem !important;
+    font-size: 0.88rem !important;
     line-height: 1.7 !important;
-    color: {NAVY_LIGHT} !important;
+    color: #333 !important;
     margin: 0 !important;
     overflow-wrap: break-word !important;
     word-break: break-word !important;
 }}
-[data-testid="stChatMessage"] strong {{
-    color: {NAVY} !important;
-}}
-/* Chat input bar */
+[data-testid="stChatMessage"] strong {{ color: #111 !important; }}
+/* Chat input */
 [data-testid="stChatInput"] {{
-    border-top: 1px solid {BORDER} !important;
-    padding-top: 0.8rem !important;
+    border-top: 1px solid #eee !important;
+    padding-top: 12px !important;
 }}
 [data-testid="stChatInput"] textarea {{
-    font-size: 0.84rem !important;
-    color: {NAVY_LIGHT} !important;
-    border-radius: 8px !important;
-    border-color: {BORDER} !important;
-    padding: 0.65rem 1rem !important;
+    font-size: 0.88rem !important;
+    color: #333 !important;
+    border-radius: 4px !important;
+    border-color: #ddd !important;
 }}
 [data-testid="stChatInput"] textarea::placeholder {{
-    color: {SLATE} !important;
-    opacity: 0.7 !important;
+    color: #999 !important;
 }}
 
-/* ── Buttons ── */
+/* ════════════════════════════
+   BUTTONS — text-style, screener.in minimal
+   ════════════════════════════ */
 .stButton > button {{
-    border: 1px solid {BORDER};
-    border-radius: 5px;
-    font-weight: 600;
-    font-size: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 0.84rem;
+    background: #fff;
+    color: #333;
+    box-shadow: none;
     transition: all 0.15s ease;
-    background: #ffffff;
-    color: {NAVY_LIGHT};
-    box-shadow: 0 1px 2px rgba(15,29,51,0.04);
 }}
 .stButton > button:hover {{
-    border-color: {NAVY_MID};
-    background: #f8fafc;
-    box-shadow: 0 2px 6px rgba(15,29,51,0.08);
-    color: {NAVY};
-}}
-hr {{
-    border-color: {BORDER} !important;
-    margin: 1.2rem 0 !important;
-}}
-.stAlert {{
-    border-radius: 6px;
-    font-size: 0.82rem;
-}}
-/* ── Caption uniformity ── */
-[data-testid="stCaptionContainer"] p {{
-    font-size: 0.78rem !important;
-    color: {SLATE} !important;
-    line-height: 1.55 !important;
+    border-color: #bbb;
+    background: #f5f5f5;
+    color: #111;
+    box-shadow: none;
 }}
 
-/* ── Widget overrides ── */
+/* ════════════════════════════
+   MISC
+   ════════════════════════════ */
+hr {{
+    border-color: #eee !important;
+    margin: 16px 0 !important;
+}}
+.stAlert {{
+    border-radius: 3px;
+    font-size: 0.85rem;
+}}
+[data-testid="stCaptionContainer"] p {{
+    font-size: 0.8rem !important;
+    color: #888 !important;
+    line-height: 1.55 !important;
+}}
 .stSelectbox [data-baseweb="select"] > div {{
-    font-size: 0.82rem !important;
+    font-size: 0.85rem !important;
 }}
 .stSlider [data-testid="stTickBarMin"],
 .stSlider [data-testid="stTickBarMax"] {{
-    font-size: 0.74rem !important;
-    color: {SLATE} !important;
+    font-size: 0.78rem !important;
+    color: #888 !important;
 }}
-/* Expander headers */
+/* Expander */
 [data-testid="stExpander"] summary {{
-    background: {BG_SUBTLE} !important;
-    border: 1px solid {BORDER} !important;
-    border-radius: 6px !important;
-    padding: 0.5rem 1rem !important;
+    background: #f9f9f9 !important;
+    border: 1px solid #eee !important;
+    border-radius: 3px !important;
+    padding: 8px 14px !important;
 }}
 [data-testid="stExpander"] summary span {{
-    font-size: 0.8rem !important;
-    font-weight: 600 !important;
-    color: {NAVY_LIGHT} !important;
+    font-size: 0.84rem !important;
+    font-weight: 500 !important;
+    color: #333 !important;
 }}
 [data-testid="stExpander"] [data-testid="stExpanderDetails"] {{
-    border: 1px solid {BORDER} !important;
+    border: 1px solid #eee !important;
     border-top: none !important;
-    border-radius: 0 0 6px 6px !important;
-    padding: 0.8rem 1rem !important;
+    border-radius: 0 0 3px 3px !important;
+    padding: 12px 14px !important;
 }}
-/* Code blocks in evidence */
 .stCodeBlock {{
-    border-radius: 5px !important;
-    font-size: 0.78rem !important;
+    border-radius: 3px !important;
+    font-size: 0.8rem !important;
 }}
-
-/* ── Plotly chart containers ── */
+/* Charts — no heavy borders */
 [data-testid="stPlotlyChart"] {{
-    border: 1px solid {BORDER};
-    border-radius: 6px;
+    border: 1px solid #eee;
+    border-radius: 2px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(15,29,51,0.04);
-    margin-bottom: 0.3rem;
+    box-shadow: none;
+    margin-bottom: 4px;
 }}
-
-/* ── Spinner text ── */
 .stSpinner > div {{
-    font-size: 0.82rem !important;
-    color: {SLATE} !important;
+    font-size: 0.85rem !important;
+    color: #888 !important;
 }}
-
-/* ── Footer ── */
+/* ── Footer — screener.in style ── */
 .pro-footer {{
     text-align: center;
-    font-size: 0.68rem;
-    color: {SLATE};
-    letter-spacing: 0.03em;
-    padding: 2rem 0 0.5rem 0;
-    border-top: 1px solid {BORDER};
-    margin-top: 3rem;
+    font-size: 0.72rem;
+    color: #999;
+    padding: 24px 0 8px 0;
+    border-top: 1px solid #eee;
+    margin-top: 40px;
     line-height: 1.8;
 }}
-.pro-footer strong {{ color: {NAVY_LIGHT} !important; }}
-
-/* ── Suggestion buttons (chat tab) ── */
+.pro-footer strong {{ color: #555 !important; }}
+/* Suggestion buttons */
 .stTabs [data-testid="stVerticalBlockBorderWrapper"] .stButton > button {{
     text-align: left !important;
-    font-size: 0.78rem !important;
-    font-weight: 500 !important;
-    color: {NAVY_LIGHT} !important;
-    padding: 0.55rem 1rem !important;
+    font-size: 0.82rem !important;
+    font-weight: 400 !important;
+    color: #333 !important;
+    padding: 8px 14px !important;
     white-space: normal !important;
     height: auto !important;
-    line-height: 1.45 !important;
+    line-height: 1.5 !important;
+    border-color: #eee !important;
+}}
+.stTabs [data-testid="stVerticalBlockBorderWrapper"] .stButton > button:hover {{
+    background: #f5f5f5 !important;
+    border-color: #ddd !important;
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -591,27 +599,27 @@ PLOTLY_LAYOUT = dict(
     template="plotly_white",
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="#ffffff",
-    font=dict(family="Inter, sans-serif", size=12, color=NAVY_LIGHT),
+    font=dict(family="Inter, sans-serif", size=12, color="#444"),
     legend=dict(
         bgcolor="rgba(0,0,0,0)", borderwidth=0,
-        font=dict(size=11, color=SLATE),
+        font=dict(size=11, color="#666"),
         orientation="h", yanchor="bottom", y=1.02, xanchor="left",
     ),
-    margin=dict(l=55, r=20, t=60, b=45),
+    margin=dict(l=50, r=15, t=55, b=40),
     xaxis=dict(
-        gridcolor="#f1f5f9", zerolinecolor="#e2e8f0",
-        linecolor="#e2e8f0", linewidth=1,
-        tickfont=dict(size=11, color=SLATE),
+        gridcolor="#f0f0f0", zerolinecolor="#ddd",
+        linecolor="#ddd", linewidth=1,
+        tickfont=dict(size=11, color="#888"),
     ),
     yaxis=dict(
-        gridcolor="#f1f5f9", zerolinecolor="#e2e8f0",
-        linecolor="#e2e8f0", linewidth=1,
-        tickfont=dict(size=11, color=SLATE),
+        gridcolor="#f0f0f0", zerolinecolor="#ddd",
+        linecolor="#ddd", linewidth=1,
+        tickfont=dict(size=11, color="#888"),
     ),
-    hoverlabel=dict(bgcolor=NAVY, font_size=12, font_family="Inter", font_color="#ffffff"),
+    hoverlabel=dict(bgcolor="#333", font_size=12, font_family="Inter", font_color="#fff"),
 )
 
-TITLE_STYLE = dict(font=dict(size=14, color=NAVY, family="Inter"), x=0, xanchor="left", y=0.97)
+TITLE_STYLE = dict(font=dict(size=14, color="#111", family="Inter"), x=0, xanchor="left", y=0.97)
 
 COLORS = {
     "NVDA": "#16a34a", "AMD": "#dc2626", "INTC": "#2563eb", "SPY": "#94a3b8",
@@ -632,13 +640,12 @@ st.markdown(f"""
   <div class="header-inner">
     <div class="top-row">
         <div>
-            <div class="logo"><span>N</span>EXUS<span style="font-weight:400; font-size:0.65em; color:rgba(255,255,255,0.55); margin-left:6px;">v2.0</span></div>
+            <div class="logo"><span>N</span>EXUS <span style="font-weight:400; font-size:0.6em; color:#bbb; margin-left:2px;">v2.0</span></div>
             <div class="tagline">Semiconductor Export Control Research Platform</div>
         </div>
         <div class="header-meta">
             <strong>Purdue University</strong> &middot; Daniels School of Business<br>
-            MGMT 69000: Mastering AI for Finance &middot; Prof. Cinder Zhang<br>
-            Spring 2026
+            MGMT 69000: Mastering AI for Finance &middot; Prof. Cinder Zhang &middot; Spring 2026
         </div>
     </div>
     <div class="desc-bar">
