@@ -13,5 +13,7 @@ indexes/chroma/
 *.db
 *.sqlite3
 .pytest_cache/
+driver-plan/
+driver-plan.zip
 htmlcov/
 .coverage
