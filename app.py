@@ -303,8 +303,8 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
     font-size: 1.05rem;
     font-weight: 700;
     color: #111;
-    margin: 1.5rem 0 0.8rem 0;
-    padding-bottom: 8px;
+    margin: 2rem 0 1.4rem 0;
+    padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
     display: block;
     text-transform: none;
@@ -605,7 +605,7 @@ PLOTLY_LAYOUT = dict(
         font=dict(size=11, color="#666"),
         orientation="h", yanchor="bottom", y=1.02, xanchor="left",
     ),
-    margin=dict(l=50, r=15, t=55, b=40),
+    margin=dict(l=50, r=15, t=75, b=40),
     xaxis=dict(
         gridcolor="#f0f0f0", zerolinecolor="#ddd",
         linecolor="#ddd", linewidth=1,
@@ -619,7 +619,7 @@ PLOTLY_LAYOUT = dict(
     hoverlabel=dict(bgcolor="#333", font_size=12, font_family="Inter", font_color="#fff"),
 )
 
-TITLE_STYLE = dict(font=dict(size=14, color="#111", family="Inter"), x=0, xanchor="left", y=0.97)
+TITLE_STYLE = dict(font=dict(size=14, color="#111", family="Inter"), x=0, xanchor="left", y=0.98, pad=dict(b=15))
 
 COLORS = {
     "NVDA": "#16a34a", "AMD": "#dc2626", "INTC": "#2563eb", "SPY": "#94a3b8",
@@ -754,9 +754,24 @@ with tab_chat:
         st.session_state.agent_logs = []
 
     for msg in st.session_state.messages:
-        avatar = "N" if msg["role"] == "assistant" else "\U0001F464"
+        avatar = "\U0001F4CA" if msg["role"] == "assistant" else "\U0001F464"
         with st.chat_message(msg["role"], avatar=avatar):
-            st.markdown(msg["content"])
+            st.markdown(msg.get("content", ""))
+            # Show evidence expander for assistant messages
+            evidence = msg.get("evidence", {})
+            if evidence and msg["role"] == "assistant":
+                with st.expander("Evidence & Sources", expanded=False):
+                    if evidence.get("citations"):
+                        st.markdown("**Retrieved Documents:**")
+                        for cid in evidence["citations"]:
+                            st.code(cid, language=None)
+                    if evidence.get("tools"):
+                        st.markdown("**Tools Executed:**")
+                        for tc in evidence["tools"]:
+                            st.code(
+                                f"{tc['tool']}({json.dumps(tc.get('arguments', {}), default=str)[:120]})",
+                                language="python",
+                            )
 
     if not st.session_state.messages:
         st.markdown('<div class="section-header">Suggested Queries</div>', unsafe_allow_html=True)
@@ -792,41 +807,44 @@ with tab_chat:
 
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
-        with st.chat_message("user", avatar="\U0001F464"):
-            st.markdown(user_input)
 
-        with st.chat_message("assistant", avatar="N"):
+        # Process the response
+        with st.chat_message("assistant", avatar="\U0001F4CA"):
             with st.spinner("Retrieving context & executing tools..."):
                 try:
                     from core.chat.agent import run_agent
                     history = [{"role": m["role"], "content": m["content"]}
                                for m in st.session_state.messages[:-1][-10:]]
                     result = run_agent(user_input, history)
-                    response_text = result["response"]
-                    st.markdown(response_text)
+                    response_text = result.get("response", "") or ""
 
-                    if result["tools_called"] or result["citations"]:
-                        with st.expander("Evidence & Sources", expanded=False):
-                            if result["citations"]:
-                                st.markdown("**Retrieved Documents:**")
-                                for cid in result["citations"][:5]:
-                                    st.code(cid, language=None)
-                            if result["tools_called"]:
-                                st.markdown("**Tools Executed:**")
-                                for tc in result["tools_called"]:
-                                    st.code(
-                                        f"{tc['tool']}({json.dumps(tc['arguments'], default=str)[:120]})",
-                                        language="python",
-                                    )
+                    # Store response and evidence in session state
+                    evidence = {}
+                    if result.get("citations"):
+                        evidence["citations"] = result["citations"][:5]
+                    if result.get("tools_called"):
+                        evidence["tools"] = result["tools_called"]
 
-                    st.session_state.messages.append({"role": "assistant", "content": response_text})
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": response_text,
+                        "evidence": evidence,
+                    })
                     st.session_state.agent_logs.append(result)
+
                 except ImportError:
-                    st.warning("Chat requires `openai` and `chromadb`. Run: `pip install openai chromadb`")
-                    st.session_state.messages.append({"role": "assistant", "content": "Dependencies missing."})
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": "Chat requires `openai` and `chromadb`. Run: `pip install openai chromadb`",
+                    })
                 except Exception as e:
-                    st.error(f"Error: {str(e)[:300]}")
-                    st.session_state.messages.append({"role": "assistant", "content": f"Error: {str(e)[:200]}"})
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": f"Error: {str(e)[:300]}",
+                    })
+
+        # Rerun so the full conversation re-renders cleanly from session state
+        st.rerun()
 
     with st.sidebar:
         st.markdown("### Chat Controls")

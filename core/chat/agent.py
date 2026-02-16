@@ -88,10 +88,9 @@ def run_agent(
                 "tools_called": tools_called,
             }
 
-        # Process tool calls
-        messages.append({
+        # Process tool calls — content can be None when tools are invoked
+        assistant_msg = {
             "role": "assistant",
-            "content": response.content,
             "tool_calls": [
                 {
                     "id": tc.id,
@@ -103,7 +102,10 @@ def run_agent(
                 }
                 for tc in response.tool_calls
             ],
-        })
+        }
+        if response.content:
+            assistant_msg["content"] = response.content
+        messages.append(assistant_msg)
 
         for tool_call in response.tool_calls:
             fn_name = tool_call.function.name
