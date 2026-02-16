@@ -65,12 +65,33 @@ p, span, li, td, th, label, input, textarea, select, button {{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }}
-p, li, td, [data-testid="stMarkdownContainer"] p {{
+
+/* ── Main-area text colors (scoped — NOT sidebar, NOT navy boxes) ── */
+[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] p,
+[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] li,
+[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] td {{
     font-size: 0.84rem !important;
     line-height: 1.65 !important;
     color: {NAVY_LIGHT} !important;
 }}
-strong, b {{ color: {NAVY} !important; }}
+[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] strong,
+[data-testid="stAppViewContainer"] [data-testid="stVerticalBlockBorderWrapper"] b {{
+    color: {NAVY} !important;
+}}
+
+/* ── Override: white text inside navy-bg containers ── */
+.takeaway-box, .takeaway-box p, .takeaway-box li, .takeaway-box strong, .takeaway-box b {{
+    color: rgba(255,255,255,0.88) !important;
+}}
+.takeaway-box strong, .takeaway-box b {{
+    color: #ffffff !important;
+}}
+.brand-header strong, .brand-header b {{
+    color: rgba(255,255,255,0.6) !important;
+}}
+.spot-banner, .spot-banner * {{
+    color: rgba(255,255,255,0.88) !important;
+}}
 
 /* ── Hide chrome ── */
 #MainMenu {{visibility: hidden;}}
@@ -85,7 +106,6 @@ header {{visibility: hidden;}}
     padding-bottom: 2rem !important;
     max-width: 1400px !important;
 }}
-/* Ensure the main area fills nicely */
 [data-testid="stAppViewContainer"] {{
     background: transparent;
 }}
@@ -125,7 +145,7 @@ header {{visibility: hidden;}}
     line-height: 1.7;
 }}
 .brand-header .header-meta strong {{
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.6) !important;
     font-weight: 600;
 }}
 .brand-header .desc-bar {{
@@ -192,7 +212,6 @@ header {{visibility: hidden;}}
     box-shadow: 0 1px 3px rgba(15,29,51,0.18);
     border-bottom: none !important;
 }}
-/* Kill Streamlit's default blue tab underline */
 .stTabs [data-baseweb="tab-highlight"] {{
     display: none !important;
 }}
@@ -205,11 +224,16 @@ section[data-testid="stSidebar"] {{
     background: {NAVY};
     border-right: 1px solid rgba(255,255,255,0.06);
 }}
-section[data-testid="stSidebar"] * {{
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] *,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] li,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] strong,
+section[data-testid="stSidebar"] b {{
     color: rgba(255,255,255,0.88) !important;
 }}
 section[data-testid="stSidebar"] p {{
-    color: rgba(255,255,255,0.70) !important;
     font-size: 0.78rem !important;
 }}
 section[data-testid="stSidebar"] label {{
@@ -237,6 +261,19 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     border: 1px solid rgba(255,255,255,0.08);
     font-size: 0.76rem;
 }}
+section[data-testid="stSidebar"] [data-testid="stAlert"] p,
+section[data-testid="stSidebar"] [data-testid="stAlert"] span {{
+    color: rgba(255,255,255,0.78) !important;
+}}
+section[data-testid="stSidebar"] .stButton > button {{
+    background: rgba(255,255,255,0.06) !important;
+    border-color: rgba(255,255,255,0.12) !important;
+    color: rgba(255,255,255,0.85) !important;
+}}
+section[data-testid="stSidebar"] .stButton > button:hover {{
+    background: rgba(255,255,255,0.12) !important;
+    color: #ffffff !important;
+}}
 
 /* ── Section Headers (unified) ── */
 .section-header {{
@@ -251,7 +288,7 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     display: block;
 }}
 
-/* ── Callout Boxes (unified font) ── */
+/* ── Callout Boxes ── */
 .callout {{
     background: {BG_SUBTLE};
     border: 1px solid {BORDER};
@@ -275,7 +312,7 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     border-left-color: #7c3aed;
 }}
 
-/* ── Observation / Takeaway (unified font) ── */
+/* ── Observation / Takeaway ── */
 .obs-grid {{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -300,6 +337,7 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     color: {NAVY_MID};
     margin-bottom: 5px;
 }}
+.obs-card strong {{ color: {NAVY} !important; }}
 .takeaway-box {{
     background: {NAVY};
     border-radius: 6px;
@@ -318,7 +356,8 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     margin-bottom: 8px;
 }}
 .takeaway-box ul {{ margin: 6px 0 0 0; padding-left: 18px; }}
-.takeaway-box li {{ margin-bottom: 5px; color: rgba(255,255,255,0.85); }}
+.takeaway-box li {{ margin-bottom: 5px; color: rgba(255,255,255,0.85) !important; }}
+.takeaway-box strong {{ color: #ffffff !important; }}
 
 /* ── Spot Price Banner ── */
 .spot-banner {{
@@ -330,7 +369,7 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     border: 1px solid {NAVY_MID};
 }}
 .spot-banner .label {{
-    color: rgba(255,255,255,0.50);
+    color: rgba(255,255,255,0.50) !important;
     font-size: 0.70rem;
     text-transform: uppercase;
     letter-spacing: 0.10em;
@@ -339,11 +378,11 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
 .spot-banner .price {{
     font-size: 1.35rem;
     font-weight: 700;
-    color: #ffffff;
+    color: #ffffff !important;
     margin-left: 8px;
 }}
 .spot-banner .meta {{
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.35) !important;
     font-size: 0.74rem;
     margin-left: 12px;
 }}
@@ -361,9 +400,62 @@ section[data-testid="stSidebar"] [data-testid="stAlert"] {{
     border-radius: 8px;
     border: 1px solid {BORDER};
     padding: 1rem 1.2rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
     background: #ffffff;
     box-shadow: 0 1px 2px rgba(15,29,51,0.03);
+    gap: 0.8rem !important;
+}}
+/* User messages — subtle tint */
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {{
+    background: {BG_SUBTLE};
+    border-color: {BORDER};
+}}
+/* Hide default emoji avatars, replace with clean initials */
+[data-testid="stChatMessage"] [data-testid="chatAvatarIcon-user"],
+[data-testid="stChatMessage"] [data-testid="chatAvatarIcon-assistant"] {{
+    display: none !important;
+}}
+/* Custom avatar badge */
+[data-testid="stChatMessage"] > div:first-child {{
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 32px !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em !important;
+    flex-shrink: 0 !important;
+}}
+/* Chat text styling */
+[data-testid="stChatMessage"] p {{
+    font-size: 0.84rem !important;
+    line-height: 1.7 !important;
+    color: {NAVY_LIGHT} !important;
+    margin: 0 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+}}
+[data-testid="stChatMessage"] strong {{
+    color: {NAVY} !important;
+}}
+/* Chat input bar */
+[data-testid="stChatInput"] {{
+    border-top: 1px solid {BORDER} !important;
+    padding-top: 0.8rem !important;
+}}
+[data-testid="stChatInput"] textarea {{
+    font-size: 0.84rem !important;
+    color: {NAVY_LIGHT} !important;
+    border-radius: 8px !important;
+    border-color: {BORDER} !important;
+    padding: 0.65rem 1rem !important;
+}}
+[data-testid="stChatInput"] textarea::placeholder {{
+    color: {SLATE} !important;
+    opacity: 0.7 !important;
 }}
 
 /* ── Buttons ── */
@@ -407,19 +499,29 @@ hr {{
     font-size: 0.74rem !important;
     color: {SLATE} !important;
 }}
-/* Chat input */
-[data-testid="stChatInput"] textarea {{
-    font-size: 0.84rem !important;
-    color: {NAVY_LIGHT} !important;
-}}
 /* Expander headers */
+[data-testid="stExpander"] summary {{
+    background: {BG_SUBTLE} !important;
+    border: 1px solid {BORDER} !important;
+    border-radius: 6px !important;
+    padding: 0.5rem 1rem !important;
+}}
 [data-testid="stExpander"] summary span {{
-    font-size: 0.82rem !important;
+    font-size: 0.8rem !important;
     font-weight: 600 !important;
     color: {NAVY_LIGHT} !important;
 }}
+[data-testid="stExpander"] [data-testid="stExpanderDetails"] {{
+    border: 1px solid {BORDER} !important;
+    border-top: none !important;
+    border-radius: 0 0 6px 6px !important;
+    padding: 0.8rem 1rem !important;
+}}
 /* Code blocks in evidence */
-.stCodeBlock {{ border-radius: 5px !important; }}
+.stCodeBlock {{
+    border-radius: 5px !important;
+    font-size: 0.78rem !important;
+}}
 
 /* ── Plotly chart containers ── */
 [data-testid="stPlotlyChart"] {{
@@ -448,6 +550,18 @@ hr {{
     line-height: 1.8;
 }}
 .pro-footer strong {{ color: {NAVY_LIGHT} !important; }}
+
+/* ── Suggestion buttons (chat tab) ── */
+.stTabs [data-testid="stVerticalBlockBorderWrapper"] .stButton > button {{
+    text-align: left !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    color: {NAVY_LIGHT} !important;
+    padding: 0.55rem 1rem !important;
+    white-space: normal !important;
+    height: auto !important;
+    line-height: 1.45 !important;
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -613,7 +727,8 @@ with tab_chat:
         st.session_state.agent_logs = []
 
     for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
+        avatar = "N" if msg["role"] == "assistant" else "\U0001F464"
+        with st.chat_message(msg["role"], avatar=avatar):
             st.markdown(msg["content"])
 
     if not st.session_state.messages:
@@ -650,10 +765,10 @@ with tab_chat:
 
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
-        with st.chat_message("user"):
+        with st.chat_message("user", avatar="\U0001F464"):
             st.markdown(user_input)
 
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant", avatar="N"):
             with st.spinner("Retrieving context & executing tools..."):
                 try:
                     from core.chat.agent import run_agent
