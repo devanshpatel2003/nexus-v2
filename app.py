@@ -77,29 +77,21 @@ strong, b {{ color: {NAVY} !important; }}
 footer {{visibility: hidden;}}
 header {{visibility: hidden;}}
 
-/* ── Root layout: flush edges ── */
+/* ── Layout ── */
 .stApp > header {{ display: none; }}
-.stApp {{
-    background: #f0f2f6;
-}}
+.stApp {{ background: #ffffff; }}
 .block-container {{
-    padding: 0 !important;
-    max-width: 100% !important;
-}}
-/* Content padding lives inside a wrapper we inject, not block-container */
-.page-wrap {{
-    max-width: 100%;
-    padding: 0 2.5rem 1rem 2.5rem;
-    background: #ffffff;
-    min-height: 100vh;
+    padding-top: 0 !important;
+    padding-bottom: 1rem !important;
+    max-width: 1400px !important;
 }}
 
-/* ── Brand Header: full-bleed ── */
+/* ── Brand Header ── */
 .brand-header {{
     background: {NAVY};
-    padding: 1.3rem 2.5rem 1rem 2.5rem;
+    padding: 1.2rem 2rem 0.9rem 2rem;
     border-bottom: 3px solid {BLUE_ACCENT};
-    margin-bottom: 1.2rem;
+    margin: -1rem -2rem 1.2rem -2rem;
 }}
 .brand-header .top-row {{
     display: flex;
@@ -175,20 +167,29 @@ header {{visibility: hidden;}}
     padding: 3px;
     border: 1px solid {BORDER};
 }}
-.stTabs [data-baseweb="tab"] {{
+.stTabs [data-baseweb="tab-list"] button[data-baseweb="tab"] {{
     height: 40px;
     border-radius: 5px;
     font-weight: 500;
-    font-size: 0.8rem;
-    color: {SLATE};
+    font-size: 0.8rem !important;
+    color: {SLATE} !important;
     padding: 0 16px;
     white-space: nowrap;
+    border-bottom: none !important;
 }}
-.stTabs [aria-selected="true"] {{
+.stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {{
     background: {NAVY_LIGHT} !important;
     color: #ffffff !important;
-    font-weight: 600;
+    font-weight: 600 !important;
     box-shadow: 0 1px 3px rgba(15,29,51,0.18);
+    border-bottom: none !important;
+}}
+/* Kill Streamlit's default blue tab underline */
+.stTabs [data-baseweb="tab-highlight"] {{
+    display: none !important;
+}}
+.stTabs [data-baseweb="tab-border"] {{
+    display: none !important;
 }}
 
 /* ── Sidebar ── */
@@ -374,12 +375,35 @@ hr {{
     border-radius: 6px;
     font-size: 0.82rem;
 }}
-/* st.caption uniformity */
+/* ── Caption uniformity ── */
 [data-testid="stCaptionContainer"] p {{
     font-size: 0.78rem !important;
     color: {SLATE} !important;
     line-height: 1.55 !important;
 }}
+
+/* ── Widget overrides ── */
+.stSelectbox [data-baseweb="select"] > div {{
+    font-size: 0.82rem !important;
+}}
+.stSlider [data-testid="stTickBarMin"],
+.stSlider [data-testid="stTickBarMax"] {{
+    font-size: 0.74rem !important;
+    color: {SLATE} !important;
+}}
+/* Chat input */
+[data-testid="stChatInput"] textarea {{
+    font-size: 0.84rem !important;
+    color: {NAVY_LIGHT} !important;
+}}
+/* Expander headers */
+[data-testid="stExpander"] summary span {{
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    color: {NAVY_LIGHT} !important;
+}}
+/* Code blocks in evidence */
+.stCodeBlock {{ border-radius: 5px !important; }}
 
 /* ── Footer ── */
 .pro-footer {{
