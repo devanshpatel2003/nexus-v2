@@ -46,6 +46,7 @@ def run_agent(
     conversation_history: List[Dict],
     max_tool_rounds: int = 3,
     model: str = LLM_MODEL,
+    provider: str = "openai",
 ) -> Dict:
     """
     Run the NEXUS agent with RAG retrieval and tool calling.
@@ -81,7 +82,7 @@ def run_agent(
 
     # Step 4: Iterative tool-calling loop
     for _ in range(max_tool_rounds):
-        response = chat_completion(messages=messages, tools=TOOL_SCHEMAS, model=model)
+        response = chat_completion(messages=messages, tools=TOOL_SCHEMAS, model=model, provider=provider)
 
         # If no tool calls, we have the final answer
         if not response.tool_calls:
@@ -132,11 +133,12 @@ def run_agent(
             messages.append({
                 "role": "tool",
                 "tool_call_id": tool_call.id,
+                "name": fn_name,
                 "content": tool_content,
             })
 
     # Final completion after tool rounds
-    response = chat_completion(messages=messages, model=model)
+    response = chat_completion(messages=messages, model=model, provider=provider)
     return {
         "response": response.content or "",
         "citations": citations,

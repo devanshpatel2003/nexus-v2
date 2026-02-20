@@ -26,7 +26,7 @@ from data.options_data import (
     fetch_options_chain, build_vol_surface, get_vol_surface_matrix,
     calculate_skew, calculate_term_structure, get_historical_iv,
 )
-from core.config import OPENAI_MODELS
+from core.config import ALL_MODELS, get_gemini_key, get_anthropic_key
 
 # ============================================================
 # PAGE CONFIG
@@ -830,7 +830,17 @@ with tab_chat:
         st.session_state.processing = False
 
     # ── Model selector (inline, always visible at top of chat) ──
-    model_labels = list(OPENAI_MODELS.keys())
+    # Hide models whose API key is not configured
+    _provider_key_check = {
+        "openai": True,  # required — always present
+        "google": get_gemini_key() is not None,
+        "anthropic": get_anthropic_key() is not None,
+    }
+    available_models = {
+        label: info for label, info in ALL_MODELS.items()
+        if _provider_key_check.get(info["provider"], False)
+    }
+    model_labels = list(available_models.keys())
     sel_col1, sel_col2 = st.columns([1, 4])
     with sel_col1:
         selected_model_label = st.selectbox(
@@ -840,15 +850,18 @@ with tab_chat:
             key="inline_model_select",
             label_visibility="collapsed",
         )
+    _provider_colors = {"openai": "#16a34a", "google": "#4285F4", "anthropic": "#d97706"}
+    _badge_color = _provider_colors.get(available_models[selected_model_label]["provider"], "#16a34a")
     with sel_col2:
         st.markdown(
             f'<div style="line-height:38px;font-size:0.75rem;color:#999;">Responding as '
-            f'<span style="display:inline-block;background:#16a34a;color:#fff;'
+            f'<span style="display:inline-block;background:{_badge_color};color:#fff;'
             f'font-size:0.65rem;font-weight:600;padding:2px 8px;border-radius:3px;'
             f'letter-spacing:0.03em;">{selected_model_label}</span></div>',
             unsafe_allow_html=True,
         )
-    selected_model_id = OPENAI_MODELS[selected_model_label]
+    selected_model_id = available_models[selected_model_label]["id"]
+    selected_provider = available_models[selected_model_label]["provider"]
 
     # ── Empty state: show intro + suggestions ──
     if not st.session_state.messages:
@@ -880,7 +893,7 @@ with tab_chat:
                 if st.button(f"**{tag}** — {q}", key=f"sug_{i}", width="stretch"):
                     st.session_state.messages.append({"role": "user", "content": q})
                     st.session_state.processing = True
-                    st.session_state.pending_model = {"id": selected_model_id, "label": selected_model_label}
+                    st.session_state.pending_model = {"id": selected_model_id, "label": selected_model_label, "provider": selected_provider}
                     st.rerun()
 
     # ── Render conversation history ──
@@ -918,15 +931,16 @@ with tab_chat:
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
         st.session_state.processing = True
-        st.session_state.pending_model = {"id": selected_model_id, "label": selected_model_label}
+        st.session_state.pending_model = {"id": selected_model_id, "label": selected_model_label, "provider": selected_provider}
         st.rerun()
 
     # ── Process pending query ──
     if st.session_state.processing:
         st.session_state.processing = False
-        active_model = st.session_state.pop("pending_model", {"id": selected_model_id, "label": selected_model_label})
+        active_model = st.session_state.pop("pending_model", {"id": selected_model_id, "label": selected_model_label, "provider": selected_provider})
         cur_model = active_model["id"]
         cur_label = active_model["label"]
+        cur_provider = active_model["provider"]
         last_user_msg = next(
             (m["content"] for m in reversed(st.session_state.messages) if m["role"] == "user"),
             None,
@@ -940,7 +954,7 @@ with tab_chat:
                             {"role": m["role"], "content": m.get("content", "")}
                             for m in st.session_state.messages[:-1][-6:]
                         ]
-                        result = run_agent(last_user_msg, history, model=cur_model)
+                        result = run_agent(last_user_msg, history, model=cur_model, provider=cur_provider)
                         response_text = result.get("response", "") or "No response generated."
 
                         evidence = {}

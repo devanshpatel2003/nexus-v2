@@ -7,30 +7,47 @@ import os
 import streamlit as st
 
 
-def get_openai_key() -> str:
-    """Get OpenAI API key from Streamlit secrets or environment."""
+def _get_key(secret_name: str) -> str | None:
+    """Get an API key from Streamlit secrets or environment. Returns None if missing."""
     try:
-        return st.secrets["OPENAI_API_KEY"]
+        return st.secrets[secret_name]
     except Exception:
-        key = os.environ.get("OPENAI_API_KEY", "")
-        if not key:
-            raise ValueError(
-                "OPENAI_API_KEY not found. Set it in .streamlit/secrets.toml "
-                "or as an environment variable."
-            )
-        return key
+        return os.environ.get(secret_name) or None
+
+
+def get_openai_key() -> str:
+    key = _get_key("OPENAI_API_KEY")
+    if not key:
+        raise ValueError(
+            "OPENAI_API_KEY not found. Set it in .streamlit/secrets.toml "
+            "or as an environment variable."
+        )
+    return key
+
+
+def get_gemini_key() -> str | None:
+    return _get_key("GOOGLE_API_KEY")
+
+
+def get_anthropic_key() -> str | None:
+    return _get_key("ANTHROPIC_API_KEY")
 
 
 # Model settings
 LLM_MODEL = "gpt-4o-mini"
 
-# Available models
-OPENAI_MODELS = {
-    "GPT-4o-mini": "gpt-4o-mini",
-    "GPT-4o": "gpt-4o",
-    "GPT-4.1-mini": "gpt-4.1-mini",
-    "GPT-4.1": "gpt-4.1",
+# All available models with provider info
+ALL_MODELS = {
+    "GPT-4o-mini": {"id": "gpt-4o-mini", "provider": "openai"},
+    "GPT-4o": {"id": "gpt-4o", "provider": "openai"},
+    "GPT-4.1-mini": {"id": "gpt-4.1-mini", "provider": "openai"},
+    "GPT-4.1": {"id": "gpt-4.1", "provider": "openai"},
+    "Gemini 2.0 Flash": {"id": "gemini-2.0-flash", "provider": "google"},
+    "Claude 3.5 Haiku": {"id": "claude-3-5-haiku-latest", "provider": "anthropic"},
 }
+
+# Backwards compat
+OPENAI_MODELS = {k: v["id"] for k, v in ALL_MODELS.items() if v["provider"] == "openai"}
 EMBEDDING_MODEL = "text-embedding-3-small"
 EMBEDDING_DIMENSIONS = 1536
 
