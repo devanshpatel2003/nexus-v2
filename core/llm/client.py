@@ -24,22 +24,23 @@ def chat_completion(
     tools: Optional[List[Dict]] = None,
     model: str = LLM_MODEL,
     temperature: float = 0.3,
+    **kwargs,
 ) -> Dict:
     """
     Call OpenAI chat completion with optional tool definitions.
     Returns the full response message dict.
     """
     client = get_client()
-    kwargs = {
+    call_kwargs = {
         "model": model,
         "messages": messages,
         "temperature": temperature,
     }
     if tools:
-        kwargs["tools"] = tools
-        kwargs["tool_choice"] = "auto"
+        call_kwargs["tools"] = tools
+        call_kwargs["tool_choice"] = "auto"
 
-    response = client.chat.completions.create(**kwargs)
+    response = client.chat.completions.create(**call_kwargs)
     return response.choices[0].message
 
 

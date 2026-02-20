@@ -23,6 +23,14 @@ def get_openai_key() -> str:
 
 # Model settings
 LLM_MODEL = "gpt-4o-mini"
+
+# Available models
+OPENAI_MODELS = {
+    "GPT-4o-mini": "gpt-4o-mini",
+    "GPT-4o": "gpt-4o",
+    "GPT-4.1-mini": "gpt-4.1-mini",
+    "GPT-4.1": "gpt-4.1",
+}
 EMBEDDING_MODEL = "text-embedding-3-small"
 EMBEDDING_DIMENSIONS = 1536
 

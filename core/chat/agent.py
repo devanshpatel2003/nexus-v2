@@ -7,6 +7,7 @@ import json
 from typing import List, Dict, Optional
 from core.llm.client import chat_completion
 from core.llm.prompts import SYSTEM_PROMPT, RAG_CONTEXT_TEMPLATE
+from core.config import LLM_MODEL
 from core.rag.retriever import retrieve_context, format_context_for_llm
 from tools import event_study_tool, volatility_tool, ecosystem_tool, price_tool
 
@@ -44,6 +45,7 @@ def run_agent(
     user_message: str,
     conversation_history: List[Dict],
     max_tool_rounds: int = 3,
+    model: str = LLM_MODEL,
 ) -> Dict:
     """
     Run the NEXUS agent with RAG retrieval and tool calling.
@@ -53,6 +55,7 @@ def run_agent(
             "response": str,           # Final assistant message
             "citations": List[str],    # Retrieved doc IDs
             "tools_called": List[Dict],# Tools invoked with params
+            "model": str,              # Model name used
         }
     """
     # Step 1: Retrieve relevant context from knowledge base
@@ -78,7 +81,7 @@ def run_agent(
 
     # Step 4: Iterative tool-calling loop
     for _ in range(max_tool_rounds):
-        response = chat_completion(messages=messages, tools=TOOL_SCHEMAS)
+        response = chat_completion(messages=messages, tools=TOOL_SCHEMAS, model=model)
 
         # If no tool calls, we have the final answer
         if not response.tool_calls:
@@ -86,6 +89,7 @@ def run_agent(
                 "response": response.content or "",
                 "citations": citations,
                 "tools_called": tools_called,
+                "model": model,
             }
 
         # Process tool calls — content can be None when tools are invoked
@@ -129,9 +133,10 @@ def run_agent(
             })
 
     # Final completion after tool rounds
-    response = chat_completion(messages=messages)
+    response = chat_completion(messages=messages, model=model)
     return {
         "response": response.content or "",
         "citations": citations,
         "tools_called": tools_called,
+        "model": model,
     }

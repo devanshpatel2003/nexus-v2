@@ -26,6 +26,7 @@ from data.options_data import (
     fetch_options_chain, build_vol_surface, get_vol_surface_matrix,
     calculate_skew, calculate_term_structure, get_historical_iv,
 )
+from core.config import OPENAI_MODELS
 
 # ============================================================
 # PAGE CONFIG
@@ -765,6 +766,7 @@ with st.sidebar:
     except Exception:
         st.error("OpenAI API: Key missing")
 
+
 # ============================================================
 # LOAD DATA (cached)
 # ============================================================
@@ -810,6 +812,27 @@ with tab_chat:
     if "processing" not in st.session_state:
         st.session_state.processing = False
 
+    # ── Model selector (inline, always visible at top of chat) ──
+    model_labels = list(OPENAI_MODELS.keys())
+    sel_col1, sel_col2 = st.columns([1, 4])
+    with sel_col1:
+        selected_model_label = st.selectbox(
+            "Model",
+            model_labels,
+            index=0,
+            key="inline_model_select",
+            label_visibility="collapsed",
+        )
+    with sel_col2:
+        st.markdown(
+            f'<div style="line-height:38px;font-size:0.75rem;color:#999;">Responding as '
+            f'<span style="display:inline-block;background:#16a34a;color:#fff;'
+            f'font-size:0.65rem;font-weight:600;padding:2px 8px;border-radius:3px;'
+            f'letter-spacing:0.03em;">{selected_model_label}</span></div>',
+            unsafe_allow_html=True,
+        )
+    selected_model_id = OPENAI_MODELS[selected_model_label]
+
     # ── Empty state: show intro + suggestions ──
     if not st.session_state.messages:
         st.markdown("""
@@ -840,11 +863,21 @@ with tab_chat:
                 if st.button(f"**{tag}** — {q}", key=f"sug_{i}", width="stretch"):
                     st.session_state.messages.append({"role": "user", "content": q})
                     st.session_state.processing = True
+                    st.session_state.pending_model = {"id": selected_model_id, "label": selected_model_label}
                     st.rerun()
 
     # ── Render conversation history ──
     for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
+        avatar = "\U0001F916" if msg["role"] == "assistant" else "\U0001F9D1"
+        with st.chat_message(msg["role"], avatar=avatar):
+            # Model badge for assistant messages
+            if msg["role"] == "assistant" and msg.get("model_label"):
+                st.markdown(
+                    f'<span style="display:inline-block;background:#16a34a;color:#fff;'
+                    f'font-size:0.65rem;font-weight:600;padding:2px 8px;border-radius:3px;'
+                    f'letter-spacing:0.03em;margin-bottom:6px;">{msg["model_label"]}</span>',
+                    unsafe_allow_html=True,
+                )
             st.markdown(msg.get("content", ""))
             # Evidence (assistant only)
             ev = msg.get("evidence")
@@ -868,26 +901,29 @@ with tab_chat:
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
         st.session_state.processing = True
+        st.session_state.pending_model = {"id": selected_model_id, "label": selected_model_label}
         st.rerun()
 
     # ── Process pending query ──
     if st.session_state.processing:
         st.session_state.processing = False
-        # Get the last user message
+        active_model = st.session_state.pop("pending_model", {"id": selected_model_id, "label": selected_model_label})
+        cur_model = active_model["id"]
+        cur_label = active_model["label"]
         last_user_msg = next(
             (m["content"] for m in reversed(st.session_state.messages) if m["role"] == "user"),
             None,
         )
         if last_user_msg:
-            with st.chat_message("assistant"):
-                with st.spinner("Analyzing..."):
+            with st.chat_message("assistant", avatar="\U0001F916"):
+                with st.spinner(f"Analyzing with {cur_label}..."):
                     try:
                         from core.chat.agent import run_agent
                         history = [
                             {"role": m["role"], "content": m.get("content", "")}
                             for m in st.session_state.messages[:-1][-10:]
                         ]
-                        result = run_agent(last_user_msg, history)
+                        result = run_agent(last_user_msg, history, model=cur_model)
                         response_text = result.get("response", "") or "No response generated."
 
                         evidence = {}
@@ -900,6 +936,7 @@ with tab_chat:
                             "role": "assistant",
                             "content": response_text,
                             "evidence": evidence,
+                            "model_label": cur_label,
                         })
                         st.session_state.agent_logs.append(result)
 
