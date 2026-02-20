@@ -10,9 +10,13 @@ import streamlit as st
 def _get_key(secret_name: str) -> str | None:
     """Get an API key from Streamlit secrets or environment. Returns None if missing."""
     try:
-        return st.secrets[secret_name]
+        val = st.secrets[secret_name]
+        if val:
+            return val.strip()
     except Exception:
-        return os.environ.get(secret_name) or None
+        pass
+    val = os.environ.get(secret_name)
+    return val.strip() if val else None
 
 
 def get_openai_key() -> str:
