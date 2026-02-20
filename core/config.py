@@ -58,7 +58,7 @@ ALL_MODELS = {
     "GPT-4o": {"id": "gpt-4o", "provider": "openai"},
     "GPT-4.1-mini": {"id": "gpt-4.1-mini", "provider": "openai"},
     "GPT-4.1": {"id": "gpt-4.1", "provider": "openai"},
-    "Gemini 2.0 Flash": {"id": "gemini-2.0-flash", "provider": "google"},
+    "Gemini 2.0 Flash Lite": {"id": "gemini-2.0-flash-lite", "provider": "google"},
     "Claude 3.5 Haiku": {"id": "claude-3-5-haiku-latest", "provider": "anthropic"},
 }
 
