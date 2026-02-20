@@ -37,7 +37,7 @@ EMBEDDING_DIMENSIONS = 1536
 # RAG settings
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 150
-RETRIEVAL_TOP_K = 6
+RETRIEVAL_TOP_K = 4
 
 # Chroma settings
 CHROMA_PERSIST_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "indexes", "chroma")

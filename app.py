@@ -938,7 +938,7 @@ with tab_chat:
                         from core.chat.agent import run_agent
                         history = [
                             {"role": m["role"], "content": m.get("content", "")}
-                            for m in st.session_state.messages[:-1][-10:]
+                            for m in st.session_state.messages[:-1][-6:]
                         ]
                         result = run_agent(last_user_msg, history, model=cur_model)
                         response_text = result.get("response", "") or "No response generated."

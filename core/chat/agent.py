@@ -126,10 +126,13 @@ def run_agent(
                 "result_preview": tool_result[:500],
             })
 
+            # Truncate large tool outputs to save tokens
+            tool_content = tool_result if len(tool_result) <= 2000 else tool_result[:2000] + "\n...[truncated]"
+
             messages.append({
                 "role": "tool",
                 "tool_call_id": tool_call.id,
-                "content": tool_result,
+                "content": tool_content,
             })
 
     # Final completion after tool rounds

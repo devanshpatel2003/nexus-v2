@@ -35,6 +35,7 @@ def chat_completion(
         "model": model,
         "messages": messages,
         "temperature": temperature,
+        "max_tokens": 1024,
     }
     if tools:
         call_kwargs["tools"] = tools
