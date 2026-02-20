@@ -768,6 +768,23 @@ with st.sidebar:
 
 
 # ============================================================
+# ENSURE VECTOR INDEX EXISTS (auto-build on first deploy)
+# ============================================================
+from core.rag.vector_store import get_collection, build_index as _build_index
+
+@st.cache_resource
+def ensure_index():
+    """Build the RAG index if it doesn't exist yet (e.g. first Streamlit Cloud deploy)."""
+    col = get_collection()
+    if col.count() == 0:
+        _build_index()
+
+try:
+    ensure_index()
+except Exception:
+    pass  # Non-fatal — chat still works via tools, just no RAG context
+
+# ============================================================
 # LOAD DATA (cached)
 # ============================================================
 

@@ -9,9 +9,7 @@ dist/
 build/
 .DS_Store
 .streamlit/secrets.toml
-indexes/chroma/
 *.db
-*.sqlite3
 .pytest_cache/
 driver-plan/
 driver-plan.zip
