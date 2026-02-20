@@ -905,8 +905,31 @@ with tab_chat:
             if ev and msg["role"] == "assistant":
                 parts = []
                 if ev.get("citations"):
+                    def _pretty_citation(chunk_id: str) -> str:
+                        """Convert e.g. 'event_2022-10-07:chunk_0' → 'Oct 7, 2022 Export Controls'."""
+                        base = chunk_id.split(":")[0]  # strip :chunk_N
+                        if base == "case_overview":
+                            return "Case Study Overview"
+                        if base.startswith("method_"):
+                            name = base.replace("method_", "").replace("_", " ").title()
+                            return f"{name} Methodology"
+                        if base.startswith("event_"):
+                            from datetime import datetime
+                            try:
+                                dt = datetime.strptime(base.replace("event_", ""), "%Y-%m-%d")
+                                return dt.strftime("%b %-d, %Y") + " Export Controls"
+                            except ValueError:
+                                pass
+                        return base.replace("_", " ").title()
+                    seen = set()
+                    pretty = []
+                    for c in ev["citations"]:
+                        label = _pretty_citation(c)
+                        if label not in seen:
+                            seen.add(label)
+                            pretty.append(label)
                     parts.append("**Sources:** " + " · ".join(
-                        f"`{c}`" for c in ev["citations"]
+                        f"`{p}`" for p in pretty
                     ))
                 if ev.get("tools"):
                     parts.append("**Tools:** " + " · ".join(
