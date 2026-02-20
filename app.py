@@ -26,7 +26,7 @@ from data.options_data import (
     fetch_options_chain, build_vol_surface, get_vol_surface_matrix,
     calculate_skew, calculate_term_structure, get_historical_iv,
 )
-from core.config import ALL_MODELS, get_gemini_key, get_anthropic_key
+from core.config import ALL_MODELS
 
 # ============================================================
 # PAGE CONFIG
@@ -830,16 +830,7 @@ with tab_chat:
         st.session_state.processing = False
 
     # ── Model selector (inline, always visible at top of chat) ──
-    # Hide models whose API key is not configured
-    _provider_key_check = {
-        "openai": True,  # required — always present
-        "google": get_gemini_key() is not None,
-        "anthropic": get_anthropic_key() is not None,
-    }
-    available_models = {
-        label: info for label, info in ALL_MODELS.items()
-        if _provider_key_check.get(info["provider"], False)
-    }
+    available_models = ALL_MODELS
     model_labels = list(available_models.keys())
     sel_col1, sel_col2 = st.columns([1, 4])
     with sel_col1:
