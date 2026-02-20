@@ -29,12 +29,24 @@ def get_openai_key() -> str:
     return key
 
 
-def get_gemini_key() -> str | None:
-    return _get_key("GOOGLE_API_KEY")
+def get_gemini_key() -> str:
+    key = _get_key("GOOGLE_API_KEY")
+    if not key:
+        raise ValueError(
+            "GOOGLE_API_KEY not found. Set it in .streamlit/secrets.toml "
+            "or as an environment variable."
+        )
+    return key
 
 
-def get_anthropic_key() -> str | None:
-    return _get_key("ANTHROPIC_API_KEY")
+def get_anthropic_key() -> str:
+    key = _get_key("ANTHROPIC_API_KEY")
+    if not key:
+        raise ValueError(
+            "ANTHROPIC_API_KEY not found. Set it in .streamlit/secrets.toml "
+            "or as an environment variable."
+        )
+    return key
 
 
 # Model settings
