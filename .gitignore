@@ -13,5 +13,7 @@ build/
 .pytest_cache/
 driver-plan/
 driver-plan.zip
+*.pptx
+make_ppt.py
 htmlcov/
 .coverage

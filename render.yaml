@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: nexus-v2
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
